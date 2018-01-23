@@ -12,4 +12,7 @@
     - StatusIndicator -- Stateless components
     - ScoreAppWithIndicator  -- Add status indicators to score app
 * RandomNumber  -- simple http request to get random integer
-* weatherApp -- all the files for weatherApp (get weather data for any city)
+* dice
+    - Dice1 -- basic program with randomness -- throw one die
+    - Dice2 -- the same as Dice1, but with CSS styling
+* weatherApp -- all the files for weather App (get weather data for any city)
