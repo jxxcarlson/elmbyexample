@@ -12,3 +12,4 @@
     - StatusIndicator -- Stateless components
     - ScoreAppWithIndicator  -- Add status indicators to score app
 * RandomNumber  -- simple http request to get random integer
+* weatherApp -- all the files for weatherApp (get weather data for any city)
