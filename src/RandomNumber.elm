@@ -1,9 +1,9 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 {- This app retrieves random numbers from www.random.org -}
 
-import Json.Decode as Decode exposing (Decoder, decodeString, int)
-import Html exposing (div, span, text, button)
+import Json.Decode as Decode exposing (Decoder, int)
+import Html exposing (div, text, button)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Http
@@ -99,7 +99,7 @@ getRandomNumber : Cmd Msg
 getRandomNumber =
     let
         url =
-            randomNumberUrl
+            randomNumberUrl 9
 
         request =
             Http.get url randomNumberDecoder
@@ -107,8 +107,21 @@ getRandomNumber =
         Http.send NewNumber request
 
 
-randomNumberUrl =
-    "https://www.random.org/integers/?num=1&min=1&max=100&col=1&base=10&format=plain&rnd=new"
+{-| maxDigits < 10
+-}
+randomNumberUrl : Int -> String
+randomNumberUrl maxDigits =
+    let
+        maxNumber =
+            10 ^ maxDigits
+
+        prefix =
+            "https://www.random.org/integers/?num=1&min=1&max="
+
+        suffix =
+            "&col=1&base=10&format=plain&rnd=new"
+    in
+        prefix ++ (toString maxNumber) ++ suffix
 
 
 randomNumberDecoder : Decoder Int
