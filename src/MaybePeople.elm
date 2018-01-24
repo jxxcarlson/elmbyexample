@@ -1,4 +1,4 @@
-module MaybePeople exposing
+module MaybePeople exposing(..)
 
 {- This module is a variant of the module People.
 The age field is not an Int but a Maybe Int.
@@ -53,3 +53,19 @@ averageAge people =
     numberOfPeopleWithOutAnAge = (List.length people) - (List.length ages)
   in
     (average, numberOfPeopleWithOutAnAge)
+
+maybeAdd : Maybe Int -> Maybe Int -> Maybe Int
+maybeAdd  x y =
+  case (x, y) of
+    (Just xx, Just yy) -> Just (xx + yy)
+    (Nothing, _) -> Nothing
+    (_, Nothing ) -> Nothing
+
+type alias IntFunction = Int -> Int -> Int
+
+maybeApply : IntFunction -> Maybe Int -> Maybe Int -> Maybe Int
+maybeApply  f x y =
+  case (x, y) of
+    (Just xx, Just yy) -> Just (f xx yy)
+    (Nothing, _) -> Nothing
+    (_, Nothing ) -> Nothing
