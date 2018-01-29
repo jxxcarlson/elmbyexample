@@ -1,5 +1,9 @@
 ## Contents of src/
 
+* CaesarCipher -- a simple implementation of the world's simplest cipher
+* dice
+    - Dice1 -- basic program with randomness -- throw one die
+    - Dice2 -- the same as Dice1, but with CSS styling
 * People		-- working with records
 * Poker	-- working with union types
 * basicApp
@@ -12,7 +16,4 @@
     - StatusIndicator -- Stateless components
     - ScoreAppWithIndicator  -- Add status indicators to score app
 * RandomNumber  -- simple http request to get random integer
-* dice
-    - Dice1 -- basic program with randomness -- throw one die
-    - Dice2 -- the same as Dice1, but with CSS styling
 * weatherApp -- all the files for weather App (get weather data for any city)
