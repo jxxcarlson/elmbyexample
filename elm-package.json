@@ -6,7 +6,8 @@
     "source-directories": [
         ".",
         "src",
-        "src/weatherApp"
+        "src/weatherApp",
+        "src/vigenere"
     ],
     "exposed-modules": [],
     "dependencies": {
