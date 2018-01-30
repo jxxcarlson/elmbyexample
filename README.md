@@ -1,3 +1,22 @@
+## Elm by Example
+
+*Elm by Example* is a book project -- still in a very preliminary
+and rough stage.  I hope to have a complete draft by July 1, 2018.
+The draft, such as it is, can be found at
+
+    http://www.knode.io/#@public/480
+
+The book is written using MiniLatex:
+
+    https://jxxcarlson.github.io/app/minilatex/src/index.html
+
+The code files below are examples from the book.
+I do appreciate comments, corrections, and suggestions:
+
+    jxxcarlson at gmail
+
+-- Jim
+
 ## Running the apps
 
 The easiest way to run the apps is to do
