@@ -1,4 +1,4 @@
-module StatusIndicator exposing (main)
+module StatusIndicatorApp exposing (main)
 
 import Html exposing (Html, div, p, span, text)
 import Html.Attributes exposing (..)

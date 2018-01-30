@@ -1,4 +1,4 @@
-module Main exposing (main)
+module RandomNumberApp exposing (main)
 
 {- This app retrieves random numbers from www.random.org -}
 

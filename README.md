@@ -6,7 +6,8 @@ The easiest way to run the apps is to do
 
 in the root of this directory, then go to http://localhost:8000
 There you will see a list of files.  Click on anything that
-ends in "App.elm"
+is an app.  If the file name ends in "App.elm," it is definitely
+an app.  But files may define apps without being named this way.
 
 The next easiest way is to use `elm make`. Imitate this example:
 
@@ -36,19 +37,21 @@ You can also import code from a module and experiment with it using
 ## Contents of src/
 
 * crypt -- Two apps for playing with encryption
+    - CaesarApp
+    - VigenereApp
 * dice
-    - Dice1 -- basic program with randomness -- throw one die
-    - Dice2 -- the same as Dice1, but with CSS styling
-* People		-- working with records
+    - Dice1App -- basic program with randomness -- throw one die
+    - Dice2App -- the same as Dice1, but with CSS styling
+* People -- working with records
 * Poker	-- working with union types
 * basicApp
-    - scoreApp1 -- one button, one counter, a record with one field
-    - scoreApp2 -- the same as above but with some CSS styling
+    - scoreApp1App -- one button, one counter, a record with one field
+    - scoreApp2App -- the same as above but with some CSS styling
 * svg
-    - Svg1  -- draw a circle on a light-colored background
-    - Bars -- draw horizontal bars, make a bar graph
-    - Bars2  -- same, but use List.map and partial application
-    - StatusIndicator -- Stateless components
-    - ScoreAppWithIndicator  -- Add status indicators to score app
-* RandomNumber  -- simple http request to get random integer
+    - Svg1App  -- draw a circle on a light-colored background
+    - BarsApp -- draw horizontal bars, make a bar graph
+    - Bars2App  -- same, but use List.map and partial application
+    - StatusIndicatorApp -- Stateless components
+    - ScoreAppWithIndicatorApp  -- Add status indicators to score app
+* RandomNumberApp  -- simple http request to get random integer
 * weatherApp -- all the files for weather App (get weather data for any city)

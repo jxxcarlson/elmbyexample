@@ -1,4 +1,4 @@
-port module Main exposing (main)
+port module WeatherApp exposing (main)
 
 {- This app retrieves and displays weather data from openweathermap.org. -}
 
