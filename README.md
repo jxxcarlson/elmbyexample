@@ -6,10 +6,6 @@ The draft, such as it is, can be found at
 
     http://www.knode.io/#@public/480
 
-The book is written using MiniLatex:
-
-    https://jxxcarlson.github.io/app/minilatex/src/index.html
-
 The code files below are examples from the book.
 I do appreciate comments, corrections, and suggestions:
 
