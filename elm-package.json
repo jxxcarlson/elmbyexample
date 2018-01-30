@@ -7,6 +7,7 @@
         ".",
         "src",
         "src/weatherApp",
+        "src/crypt",
         "src/vigenere"
     ],
     "exposed-modules": [],

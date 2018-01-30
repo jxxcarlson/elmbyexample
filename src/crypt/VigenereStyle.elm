@@ -1,4 +1,4 @@
-module Style exposing (..)
+module VigenereStyle exposing (..)
 
 import Html.Attributes exposing (style)
 
@@ -6,7 +6,7 @@ import Html.Attributes exposing (style)
 mainStyle =
     style
         [ ( "width", "400px" )
-        , ( "height", "300px" )
+        , ( "height", "360px" )
         , ( "padding", "15px" )
         , ( "margin", "40px" )
         , ( "background-color", "rgb(140,140,140" )

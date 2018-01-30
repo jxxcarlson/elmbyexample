@@ -1,4 +1,4 @@
-module CaesarCipher exposing (..)
+module CaesarApp exposing (..)
 
 {- A very basic app that demonstrates the Caesar Cipher. -}
 
@@ -6,6 +6,7 @@ import Char
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import CaesarCipher exposing(encryptWithCaesar)
 
 
 main =
@@ -47,8 +48,12 @@ update msg model =
         CipherText cipherText ->
             { model | cipherText = cipherText }
 
-        Key key ->
-            { model | key = String.toInt key |> Result.withDefault 0 }
+        Key keyString ->
+          let
+            key = String.toInt keyString |> Result.withDefault 0
+            cipherText = encryptWithCaesar key model.plainText
+          in
+            { model | key = key, cipherText = cipherText }
 
 
 
@@ -79,45 +84,11 @@ view model =
             []
         , p
             [ encryptedTextStyle ]
-            [ text (encrypt model.key model.plainText) ]
+            [ text model.cipherText ]
         , p
             [ labeStyle ]
             [ text "Enter a word in 'Plain text' and an integer in 'key'" ]
         ]
-
-
-
--- ENCRYPTION
-{- One should really use modular arithmetic for the below. -}
-
-
-string2ascii : String -> List Char.KeyCode
-string2ascii message =
-    message
-        |> String.toList
-        |> List.map Char.toCode
-
-
-ascii2string : List Char.KeyCode -> String
-ascii2string nums =
-    nums
-        |> List.map Char.fromCode
-        |> String.fromList
-
-
-add : Int -> Int -> Int
-add x y =
-    x + y
-
-
-encrypt : Int -> String -> String
-encrypt k str =
-    str |> string2ascii |> List.map (add k) |> ascii2string
-
-
-decrypt : Int -> String -> String
-decrypt k str =
-    encrypt -k str
 
 
 
