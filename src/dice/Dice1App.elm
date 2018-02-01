@@ -1,4 +1,4 @@
-module Dice1 exposing (..)
+module Dice1App exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)

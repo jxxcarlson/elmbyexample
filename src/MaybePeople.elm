@@ -34,25 +34,35 @@ sortNames people =
 updateAge : Int -> Person -> Person
 updateAge increment person =
   case person.age of
-    Just nYears -> { person | age = Just (nYears + increment)}
+    Just k -> { person | age = Just (k + increment)}
     Nothing -> person
 
 updateAges : Int -> List Person -> List Person
 updateAges increment people =
   List.map (updateAge increment) people
 
+
+filterMaybeInt : List (Maybe Int) -> List Int
+filterMaybeInt maybeNumbers =
+  maybeNumbers
+    |> List.filter (\n -> n /= Nothing)
+    |> List.map (Maybe.withDefault 0)
+
 averageAge : List Person -> (Float, Int)
 averageAge people =
   let
     ages = people
-      |> List.filter (\person -> person.age /= Nothing)
-      |> List.map .age |> List.map ((Maybe.withDefault 0) >> toFloat)
+      |> List.map .age
+      |> filterMaybeInt
+      |> List.map toFloat
     numberOfPeopleWithAnAge = List.length ages |> toFloat
     total = List.sum ages
     average = total/numberOfPeopleWithAnAge
     numberOfPeopleWithOutAnAge = (List.length people) - (List.length ages)
   in
     (average, numberOfPeopleWithOutAnAge)
+
+{- Some geeky stuff -}    
 
 maybeAdd : Maybe Int -> Maybe Int -> Maybe Int
 maybeAdd  x y =

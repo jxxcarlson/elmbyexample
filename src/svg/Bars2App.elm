@@ -1,4 +1,4 @@
-module Bars exposing (main)
+module Bars2App exposing (main)
 
 import Html exposing (Html, div, table, td, text, tr)
 import Html.Attributes exposing (..)
@@ -10,12 +10,7 @@ main : Html msg
 main =
     div
         [ mainStyle ]
-        [ horizontalBar 100 10 "red" 0.5
-        , horizontalBar 100 10 "red" 1.0
-        , horizontalBar 100 10 "red" 0.75
-        , horizontalBar 100 10 "red" 0.5
-        , horizontalBar 100 10 "red" 0.25
-        ]
+        (horizontalGraph 100 10 "red" [ 0.5, 1.0, 0.75, 0.5, 0.25 ])
 
 
 hRect barWidth barHeight color fraction =
@@ -31,6 +26,10 @@ horizontalBar barWidth barHeight color fraction =
     svg
         [ SA.height <| toString (barHeight + 2) ]
         [ hRect barWidth barHeight color fraction ]
+
+
+horizontalGraph barWidth barHeight color data =
+    List.map (horizontalBar barWidth barHeight color) data
 
 
 mainStyle =

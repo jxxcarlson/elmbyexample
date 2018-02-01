@@ -1,4 +1,4 @@
-module ScoreAppWithIndicator exposing (..)
+module ScoreAppWithIndicatorApp exposing (..)
 
 import Html exposing (Html, button, div, p, text)
 import Html.Attributes exposing (..)

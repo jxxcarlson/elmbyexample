@@ -1,4 +1,4 @@
-module Svg1 exposing (..)
+module Svg1App exposing (..)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

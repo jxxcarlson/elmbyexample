@@ -2,7 +2,7 @@
 -- https://guide.elm-lang.org/architecture/effects/random.html
 
 
-module Dice2 exposing (..)
+module Dice2App exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (style)
