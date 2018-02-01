@@ -1,4 +1,4 @@
-module Vigenere exposing (longKeyEncrypt, longKeyDecrypt)
+module VigenereCipher exposing (longKeyEncrypt, longKeyDecrypt)
 
 import Char
 
