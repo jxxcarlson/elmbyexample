@@ -3,22 +3,31 @@ module Vigenere exposing (longKeyEncrypt, longKeyDecrypt)
 import Char
 
 
-string2ascii : String -> List Char.KeyCode
-string2ascii message =
-    message
+stringToIntList : String -> List Int
+stringToIntList string =
+    string
+        |> String.toUpper
         |> String.toList
         |> List.map Char.toCode
+        |> List.map (\c -> c - 65)
+
+
+intListToString : List Int -> String
+intListToString intList =
+    intList
+        |> List.map (\i -> i + 65)
+        |> List.map Char.fromCode
+        |> String.fromList
 
 
 add : Int -> Int -> Int
 add x y =
-    x + y
+    (x + y) % 26
 
 
-ascii2string : List Char.KeyCode -> List Char
-ascii2string nums =
-    nums
-        |> List.map Char.fromCode
+sub : Int -> Int -> Int
+sub x y =
+    (x - y) % 26
 
 
 extend : String -> String -> String
@@ -39,52 +48,32 @@ extend key str =
         String.slice 0 n longkey
 
 
-sub : Int -> Int
-sub x =
-    x - (Char.toCode 'A')
-
-
-ad : Int -> Int
-ad x =
-    x - (Char.toCode 'A')
-
-
 longKeyEncrypt : String -> String -> String
 longKeyEncrypt key text =
     let
         longKey =
-            extend key text |> string2ascii |> List.map sub
+            extend key text |> stringToIntList
 
         textVector =
-            text |> string2ascii
+            text |> stringToIntList
 
         newVector =
-            List.map2 (+) textVector longKey
+            List.map2 add textVector longKey
     in
-        ascii2string newVector |> String.fromList
+        intListToString newVector
 
 
 longKeyDecrypt : String -> String -> String
 longKeyDecrypt key text =
     let
         longKey =
-            Debug.log "longKey"
-                extend
-                key
-                text
-                |> string2ascii
-                |> List.map ad
+            extend key text |> stringToIntList
 
         textVector =
-            Debug.log "textVector"
-                text
-                |> string2ascii
+            text
+                |> stringToIntList
 
         newVector =
-            Debug.log "newVector"
-                List.map2
-                (-)
-                textVector
-                longKey
+            List.map2 sub textVector longKey
     in
-        ascii2string newVector |> String.fromList
+        intListToString newVector
