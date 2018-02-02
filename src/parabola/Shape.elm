@@ -1,28 +1,29 @@
-module Shape exposing (..)
+module Shape exposing (Shape(..), draw, moveTo, moveBy)
+
+{-|  The Shape module defines Shape type which can take values
+of the form `Rect data` or `Ellipse data` and which provides
+functions for manipulating these shapes and rendering them
+into SVG. -}
 
 import Svg as S exposing (..)
-import Svg.Attributes as SA exposing (..)
-import XColor exposing (..)
+import Svg.Attributes exposing (..)
+import ColorRecord exposing (..)
 import Vector exposing (Vector)
-
-
-{-| The three data structures below define
-the needed geometric structures: points,
-circles, and rectangles.
--}
-type alias ShapeData =
-    { cx : Float
-    , cy : Float
-    , width : Float
-    , height : Float
-    , strokeColor : XColor
-    , fillColor : XColor
-    }
 
 
 type Shape
     = Rect ShapeData
     | Ellipse ShapeData
+
+
+type alias ShapeData =
+    { cx : Float
+    , cy : Float
+    , width : Float
+    , height : Float
+    , strokeColor : ColorRecord
+    , fillColor : ColorRecord
+    }
 
 
 draw : Shape -> S.Svg msg
@@ -78,7 +79,7 @@ moveBy displacement shape =
             Ellipse _ ->
                 Ellipse newShapeData
 
-
+svgRectAttributes : ShapeData -> List (Attribute msg)
 svgRectAttributes data =
     [ fill (rgba data.fillColor)
     , stroke (rgba data.fillColor)
@@ -89,6 +90,7 @@ svgRectAttributes data =
     ]
 
 
+svgEllipseAttributes : ShapeData -> List (Attribute msg)
 svgEllipseAttributes data =
     [ fill (rgba data.fillColor)
     , stroke (rgba data.fillColor)
@@ -99,22 +101,3 @@ svgEllipseAttributes data =
     ]
 
 
-distance : Shape -> Shape -> Float
-distance p q =
-    let
-        pd =
-            data p
-
-        qd =
-            data q
-
-        dx =
-            pd.cx - qd.cx
-
-        dy =
-            pd.cy - qd.cy
-
-        d_squared =
-            dx * dx + dy * dy
-    in
-        sqrt d_squared

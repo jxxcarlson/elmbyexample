@@ -1,9 +1,30 @@
 module Parabola exposing (..)
 
+{- Parabola shows how to use the Physics module to simulate the motion
+of a particle -- a "ball" -- with given mass, initial position
+and velocity, and an applied force.  Is this example, we use screen
+coordinates, with (0,0) in the upper left corner, so that the vector
+
+    force = Vector 0 100
+
+is directed downwards.  The initial velocity is
+
+     Vector 20 -15
+
+and so points upward and to the right.  The motion of the ball,
+of course,  is a parabola. 
+
+NOTE: The Physics module depends upon
+
+   - Shape
+   - Vector
+   
+-}
+
 import Svg exposing (Svg, svg)
 import Svg.Attributes as SA
 import Shape exposing (..)
-import XColor exposing (..)
+import ColorRecord exposing (..)
 import Particle exposing (Particle)
 import Vector exposing (Vector)
 import Html exposing (..)

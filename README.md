@@ -13,6 +13,32 @@ I do appreciate comments, corrections, and suggestions:
 
 -- Jim
 
+## Contents of src/
+
+Lower case names are folders, upper case names are modules.
+
+* crypt -- Two apps for playing with encryption
+    - CaesarApp
+    - VigenereApp
+* dice
+    - Dice1App -- basic program with randomness -- throw one die
+    - Dice2App -- the same as Dice1, but with CSS styling
+* parabola -- Physics simulation of a ball tossed into the air
+* People -- working with records
+* Poker	-- working with union types
+* basicApp
+    - scoreApp1App -- one button, one counter, a record with one field
+    - scoreApp2App -- the same as above but with some CSS styling
+* svg
+    - Svg1App  -- draw a circle on a light-colored background
+    - BarsApp -- draw horizontal bars, make a bar graph
+    - Bars2App  -- same, but use List.map and partial application
+    - StatusIndicatorApp -- Stateless components
+    - ScoreAppWithIndicatorApp  -- Add status indicators to score app
+* RandomNumberApp  -- simple http request to get random integer
+* weatherApp -- all the files for weather App (get weather data for any city)
+
+
 ## Running the apps
 
 The easiest way to run the apps is to do
@@ -49,24 +75,3 @@ You can also import code from a module and experiment with it using
    ```
 
 
-## Contents of src/
-
-* crypt -- Two apps for playing with encryption
-    - CaesarApp
-    - VigenereApp
-* dice
-    - Dice1App -- basic program with randomness -- throw one die
-    - Dice2App -- the same as Dice1, but with CSS styling
-* People -- working with records
-* Poker	-- working with union types
-* basicApp
-    - scoreApp1App -- one button, one counter, a record with one field
-    - scoreApp2App -- the same as above but with some CSS styling
-* svg
-    - Svg1App  -- draw a circle on a light-colored background
-    - BarsApp -- draw horizontal bars, make a bar graph
-    - Bars2App  -- same, but use List.map and partial application
-    - StatusIndicatorApp -- Stateless components
-    - ScoreAppWithIndicatorApp  -- Add status indicators to score app
-* RandomNumberApp  -- simple http request to get random integer
-* weatherApp -- all the files for weather App (get weather data for any city)

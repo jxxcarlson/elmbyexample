@@ -4,9 +4,9 @@ module RandomNumberApp exposing (main)
 
 import Json.Decode as Decode exposing (Decoder, int)
 import Html exposing (div, text, button)
-import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Http
+import StyleForRandomNumbers exposing(..)
 
 
 main =
@@ -129,36 +129,3 @@ randomNumberDecoder =
     int
 
 
-
--- STYLE
-
-
-mainStyle =
-    style
-        [ ( "width", "130px" )
-        , ( "height", "180px" )
-        , ( "background-color", "#ddd" )
-        , ( "padding", "20px" )
-        , ( "margin", "20px" )
-        ]
-
-
-messageStyle =
-    style
-        [ ( "width", "100px" )
-        , ( "height", "16px" )
-        , ( "background-color", "#444" )
-        , ( "color", "#fff" )
-        , ( "padding", "12px" )
-        , ( "font-size", "16px" )
-        , ( "margin-top", "15px" )
-        ]
-
-
-buttonStyle =
-    style
-        [ ( "background-color", "#66b" )
-        , ( "color", "#fff" )
-        , ( "padding", "12px" )
-        , ( "margin-top", "15px" )
-        ]

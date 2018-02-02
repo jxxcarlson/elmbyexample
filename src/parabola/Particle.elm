@@ -1,6 +1,28 @@
 module Particle exposing (Particle, update, draw, orbit, make)
 
-import Shape exposing (Shape, moveTo)
+{- A `Particle` has mass, position, velocity, and shape.
+
+- Construct a particle using `make mass position velociy shape`.
+
+- Use `draw particle` to obtain an Svg representation of a particle.
+
+- Use `update t force particle` to return an updated version of the 
+  particle under the influence of the given force acting for time t.
+  
+- Use `orbit n stepper initiaValue` to obtain the "orbit" of a particle
+  consisting of n updates using the `stepper` function.
+
+A `stepper` function is of type `Particle -> Particle`. As an example,
+consider the function
+
+   ss = Particle.update 0.75 force,
+
+where `force` is force vector and 0.75 is an interval of time.  Then
+`ss`, which is a partial application of `Particle.update`, is a stepper
+function.
+-}
+
+import Shape exposing (Shape(..), moveTo)
 import Vector exposing (Vector, add, mul)
 import Svg
 

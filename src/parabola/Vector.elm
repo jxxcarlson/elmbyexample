@@ -50,3 +50,17 @@ angle a b =
             (dot a b) / sqrt ((norm_squared a) * (norm_squared b))
     in
         acos ratio
+
+distance : Vector -> Vector -> Float
+distance p q =
+    let
+        dx =
+            p.x - q.x
+
+        dy =
+            p.y - q.y
+
+        d_squared =
+            dx * dx + dy * dy
+    in
+        sqrt d_squared
