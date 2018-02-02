@@ -23,9 +23,11 @@ Lower case names are folders, upper case names are modules.
 * dice
     - Dice1App -- basic program with randomness -- throw one die
     - Dice2App -- the same as Dice1, but with CSS styling
+* modules -- for learning Elm, the language
+    - People -- working with records
+    - MaybePeople -- segue into the Maybe Type
+    - Poker	-- working with union types
 * parabola -- Physics simulation of a ball tossed into the air
-* People -- working with records
-* Poker	-- working with union types
 * basicApp
     - scoreApp1App -- one button, one counter, a record with one field
     - scoreApp2App -- the same as above but with some CSS styling
@@ -35,7 +37,7 @@ Lower case names are folders, upper case names are modules.
     - Bars2App  -- same, but use List.map and partial application
     - StatusIndicatorApp -- Stateless components
     - ScoreAppWithIndicatorApp  -- Add status indicators to score app
-* RandomNumberApp  -- simple http request to get random integer
+* random: RandomNumberApp  -- simple http request to get random integer
 * weatherApp -- all the files for weather App (get weather data for any city)
 
 
