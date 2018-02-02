@@ -1,7 +1,7 @@
-Parabola
-========
+Physics101
+==========
 
-*To run the app:* Use `elm make src/parabola/Parabola.elm` from the root 
+*To run the app:* Use `elm make src/physics101/Parabola.elm` from the root 
 of the `elmbyexample` folder, the open `index.html`
 using a browser.
 

@@ -9,7 +9,7 @@
         "src/weatherApp",
         "src/crypt",
         "src/vigenere",
-        "src/parabola",
+        "src/physics101",
         "src/randomNumber"
     ],
     "exposed-modules": [],

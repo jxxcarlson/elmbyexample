@@ -17,27 +17,27 @@ I do appreciate comments, corrections, and suggestions:
 
 Lower case names are folders, upper case names are modules.
 
+* basicApp
+    - scoreApp1App -- one button, one counter, a record with one field
+    - scoreApp2App -- the same as above but with some CSS styling
 * crypt -- Two apps for playing with encryption
     - CaesarApp
     - VigenereApp
 * dice
     - Dice1App -- basic program with randomness -- throw one die
     - Dice2App -- the same as Dice1, but with CSS styling
-* modules -- for learning Elm, the language
+* modules -- for learning Elm, the language 
     - People -- working with records
     - MaybePeople -- segue into the Maybe Type
     - Poker	-- working with union types
-* parabola -- Physics simulation of a ball tossed into the air
-* basicApp
-    - scoreApp1App -- one button, one counter, a record with one field
-    - scoreApp2App -- the same as above but with some CSS styling
+* physics101 -- Static image simulation of a ball tossed into the air
+* random: RandomNumberApp  -- simple http request to get random integer
 * svg
     - Svg1App  -- draw a circle on a light-colored background
     - BarsApp -- draw horizontal bars, make a bar graph
     - Bars2App  -- same, but use List.map and partial application
     - StatusIndicatorApp -- Stateless components
     - ScoreAppWithIndicatorApp  -- Add status indicators to score app
-* random: RandomNumberApp  -- simple http request to get random integer
 * weatherApp -- all the files for weather App (get weather data for any city)
 
 
