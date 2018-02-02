@@ -8,7 +8,8 @@
         "src",
         "src/weatherApp",
         "src/crypt",
-        "src/vigenere"
+        "src/vigenere",
+        "src/parabola"
     ],
     "exposed-modules": [],
     "dependencies": {
