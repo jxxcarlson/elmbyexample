@@ -6,7 +6,7 @@ the library and the demos.  Noteworthy in the Particle module is that
 the dynamics of particles is determined by a field, which has
 type signature
 
-  Field : Vector -> Vector
+    Field : Vector -> Vector
 
 That is, to each position vector is assigned a force vector.
 
