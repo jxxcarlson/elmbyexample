@@ -40,7 +40,7 @@ That is, to each position vector is assigned a force vector.
           u = -(r.y/range)
         in
         Vector 0 (-5 + strength*e^u)
-        ```
+      ```
 
     In this case, one observes a "hard bounce" with angle of reflection
     equal to angle of incidence.
