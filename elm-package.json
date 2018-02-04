@@ -10,7 +10,8 @@
         "src/crypt",
         "src/vigenere",
         "src/physics101",
-        "src/randomNumber"
+        "src/randomNumber",
+        "src/billiards"
     ],
     "exposed-modules": [],
     "dependencies": {
