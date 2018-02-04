@@ -46,4 +46,4 @@ That is, to each position vector is assigned a force vector.
 
 *To run the Parabola app:* Use `elm make src/physics101/Parabola.elm` from the root
 of the `elmbyexample` folder, the open `index.html`
-using a browser.
+using a browser.  Similarly for Parabola2.elm, etc.
