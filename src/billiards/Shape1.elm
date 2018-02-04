@@ -1,4 +1,4 @@
-module Shape exposing (..)
+module Shape1 exposing (..)
 
 import Svg as S exposing (..)
 import Svg.Attributes as SA exposing (..)

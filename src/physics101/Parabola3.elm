@@ -75,8 +75,8 @@ circle =
 {-| Note that we are using screen coordinates,
 so the force is directed downwards,
 -}
-field v =
-  Vector 0 (-5 + (100 - v.y)/10)
+field r =
+  Vector 0 (-5 + (100 - r.y)/10)
 
 {-| Particle.make mass position velocity shape
 -}

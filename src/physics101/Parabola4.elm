@@ -75,13 +75,13 @@ circle =
 {-| Note that we are using screen coordinates,
 so the force is directed downwards,
 -}
-field v =
+field r =
   let
-    r = 15
-    k = 40
-    u = -(v.y/r)
+    range = 15
+    strength = 40
+    u = -(r.y/range)
   in
-  Vector 0 (-5 + k*e^u)
+  Vector 0 (-5 + strength*e^u)
 
 {-| Particle.make mass position velocity shape
 -}

@@ -1,4 +1,4 @@
-module Vector exposing (..)
+module Vector1 exposing (..)
 
 
 type alias Vector =
