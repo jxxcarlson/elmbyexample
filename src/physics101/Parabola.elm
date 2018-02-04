@@ -1,24 +1,24 @@
 module Parabola exposing (..)
 
 {- Parabola shows how to use the Physics module to simulate the motion
-of a particle -- a "ball" -- with given mass, initial position
-and velocity, and an applied force.  Is this example, we use screen
-coordinates, with (0,0) in the upper left corner, so that the vector
+   of a particle -- a "ball" -- with given mass, initial position
+   and velocity, and an applied force.  Is this example, we use screen
+   coordinates, with (0,0) in the upper left corner, so that the vector
 
-    force = Vector 0 100
+       force = Vector 0 100
 
-is directed downwards.  The initial velocity is
+   is directed downwards.  The initial velocity is
 
-     Vector 20 -15
+        Vector 20 -15
 
-and so points upward and to the right.  The motion of the ball,
-of course,  is a parabola. 
+   and so points upward and to the right.  The motion of the ball,
+   of course,  is a parabola.
 
-NOTE: The Physics module depends upon
+   NOTE: The Physics module depends upon
 
-   - Shape
-   - Vector
-   
+      - Shape
+      - Vector
+
 -}
 
 import Svg exposing (Svg, svg)
@@ -51,7 +51,12 @@ display =
 -}
 circle : Shape
 circle =
-    Ellipse { cx = 0, cy = 0, width = 15, height = 15, strokeColor = redColor, fillColor = lightRedColor }
+    Ellipse
+        { center = Vector 0 0
+        , dimensions = Vector 15 15
+        , strokeColor = redColor
+        , fillColor = lightRedColor
+        }
 
 
 {-| Note that we are using screen coordinates,

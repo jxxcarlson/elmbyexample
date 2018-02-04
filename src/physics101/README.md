@@ -1,25 +1,15 @@
 Physics101
 ==========
 
-*To run the app:* Use `elm make src/physics101/Parabola.elm` from the root 
+Physics101 is a physics simulation package.  There there are two parts:
+the library and the demos.
+
+  * Parabola: a demo of throwing a ball into the air and letting it fall
+    under the influence of gravity.  Uses screen coordinates.
+
+  * Parabola2: the same, but uses Cartesian coordinates.
+
+
+*To run the Parabola app:* Use `elm make src/physics101/Parabola.elm` from the root
 of the `elmbyexample` folder, the open `index.html`
 using a browser.
-
-The Parabola app shows how to use the Physics module to simulate the motion
-of a particle  with given mass, initial position
-and velocity, and an applied force.  Is this example, we use screen
-coordinates, with (0,0) in the upper left corner, so that the vector
-
-    force = Vector 0 100
-
-is directed downwards.  The initial velocity is
-
-     Vector 20 -15
-
-and so points upward and to the right.  The motion of the ball,
-of course,  is a parabola. 
-
-NOTE: The Physics module depends upon
-
-   - Shape
-   - Vector

@@ -1,30 +1,31 @@
-module Particle exposing (Particle, update, draw, orbit, make)
+module Particle exposing (Particle, update, draw, orbit, make, transform)
 
 {- A `Particle` has mass, position, velocity, and shape.
 
-- Construct a particle using `make mass position velociy shape`.
+   - Construct a particle using `make mass position velociy shape`.
 
-- Use `draw particle` to obtain an Svg representation of a particle.
+   - Use `draw particle` to obtain an Svg representation of a particle.
 
-- Use `update t force particle` to return an updated version of the 
-  particle under the influence of the given force acting for time t.
-  
-- Use `orbit n stepper initiaValue` to obtain the "orbit" of a particle
-  consisting of n updates using the `stepper` function.
+   - Use `update t force particle` to return an updated version of the
+     particle under the influence of the given force acting for time t.
 
-A `stepper` function is of type `Particle -> Particle`. As an example,
-consider the function
+   - Use `orbit n stepper initiaValue` to obtain the "orbit" of a particle
+     consisting of n updates using the `stepper` function.
 
-   ss = Particle.update 0.75 force,
+   A `stepper` function is of type `Particle -> Particle`. As an example,
+   consider the function
 
-where `force` is force vector and 0.75 is an interval of time.  Then
-`ss`, which is a partial application of `Particle.update`, is a stepper
-function.
+      ss = Particle.update 0.75 force,
+
+   where `force` is force vector and 0.75 is an interval of time.  Then
+   `ss`, which is a partial application of `Particle.update`, is a stepper
+   function.
 -}
 
 import Shape exposing (Shape(..), moveTo)
 import Vector exposing (Vector, add, mul)
 import Svg
+import Affine
 
 
 type alias Particle =
@@ -86,3 +87,12 @@ update t force particle =
             Shape.moveTo newPosition particle.shape
     in
         { particle | position = newPosition, velocity = newVelocity, shape = newShape }
+
+
+transform : Affine.Coefficients -> Particle -> Particle
+transform coefficients particle =
+    let
+        newShape =
+            Shape.transform coefficients particle.shape
+    in
+        { particle | shape = newShape }
