@@ -1,4 +1,4 @@
-module Particle exposing (Particle, update, draw, orbit, make, transform)
+module Particle exposing (Particle, update, draw, orbit, make, transform, constantField)
 
 {- A `Particle` has mass, position, velocity, and shape.
 
@@ -35,6 +35,13 @@ type alias Particle =
     , shape : Shape
     }
 
+type alias Field = Vector -> Vector
+
+type alias Stepper = Particle ->  Particle
+
+constantField : Vector -> Field
+constantField f =
+  \v -> f
 
 make : Float -> Vector -> Vector -> Shape -> Particle
 make mass position velocity shape =
@@ -45,12 +52,12 @@ make mass position velocity shape =
         { position = position, velocity = velocity, mass = mass, shape = shape_ }
 
 
-orbit : Int -> (Particle -> Particle) -> Particle -> List Particle
+orbit : Int -> Stepper -> Particle -> List Particle
 orbit n stepper initiaValue =
     orbitAux n stepper [ initiaValue ]
 
 
-orbitAux : Int -> (Particle -> Particle) -> List Particle -> List Particle
+orbitAux : Int -> Stepper -> List Particle -> List Particle
 orbitAux n stepper acc =
     if n == 0 then
         acc
@@ -58,7 +65,7 @@ orbitAux n stepper acc =
         orbitAux (n - 1) stepper ((step stepper acc) ++ acc)
 
 
-step : (Particle -> Particle) -> List Particle -> List Particle
+step : Stepper -> List Particle -> List Particle
 step stepper list =
     List.map stepper (List.take 1 list)
 
@@ -68,8 +75,8 @@ draw particle =
     Shape.draw particle.shape
 
 
-update : Float -> Vector -> Particle -> Particle
-update t force particle =
+update : Float -> Field -> Particle -> Particle
+update t field particle =
     let
         displacement =
             mul t particle.velocity
@@ -78,7 +85,7 @@ update t force particle =
             add particle.position displacement
 
         acceleration =
-            mul (1 / particle.mass) force
+            mul (1 / particle.mass) (field newPosition)
 
         newVelocity =
             add (mul t acceleration) particle.velocity
