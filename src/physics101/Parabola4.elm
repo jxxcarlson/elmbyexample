@@ -77,8 +77,8 @@ so the force is directed downwards,
 -}
 field r =
   let
-    range = 15
-    strength = 40
+    range = 10
+    strength = 60
     u = -(r.y/range)
   in
   Vector 0 (-5 + strength*e^u)
@@ -105,7 +105,7 @@ is the result of partial application. It has type signature
 -}
 trajectory : List Particle
 trajectory =
-    Particle.orbit 140 (Particle.update 1.5 field) ball
+    Particle.orbit 350 (Particle.update 0.6 field) ball
 
 
 {-| Map the trajectory to a list of Svg msg's to

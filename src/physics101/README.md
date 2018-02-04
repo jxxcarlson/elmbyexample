@@ -34,8 +34,8 @@ That is, to each position vector is assigned a force vector.
 
       field r =
         let
-          range = 15
-          strength = 40
+          range = 10
+          strength = 60
           u = -(r.y/range)
         in
         Vector 0 (-5 + strength*e^u)
