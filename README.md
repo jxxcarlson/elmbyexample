@@ -20,13 +20,15 @@ Lower case names are folders, upper case names are modules.
 * basicApp
     - scoreApp1App -- one button, one counter, a record with one field
     - scoreApp2App -- the same as above but with some CSS styling
+* billiards -- a simulation of billiard balls bouncing around in
+  rectangular container.
 * crypt -- Two apps for playing with encryption
     - CaesarApp
     - VigenereApp
 * dice
     - Dice1App -- basic program with randomness -- throw one die
     - Dice2App -- the same as Dice1, but with CSS styling
-* modules -- for learning Elm, the language 
+* modules -- for learning Elm, the language
     - People -- working with records
     - MaybePeople -- segue into the Maybe Type
     - Poker	-- working with union types
@@ -75,5 +77,3 @@ You can also import code from a module and experiment with it using
    > encryptWithCaesar 1 "HELLO"
   "IFMMP" : String
    ```
-
-
