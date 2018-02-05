@@ -2,7 +2,7 @@ module Main exposing (..)
 
 -- On commandshttps://www.elm-tutorial.org/en/03-subs-cmds/02-commands.html
 
-import BouncingBallModel exposing (viewModel)
+import BouncingBallModel exposing (trajectory, viewModel)
 import BouncingBallTypes exposing (Model, Msg(..), SimulatorState(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -31,6 +31,7 @@ start simulatorState =
     ( { simulatorState = simulatorState
       , count = 0
       , maxSteps = maxSteps
+      , trajectory = trajectory maxSteps
       , message = "Starting engines"
       , info = "Hi there"
       }

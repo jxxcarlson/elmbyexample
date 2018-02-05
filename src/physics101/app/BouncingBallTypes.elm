@@ -1,5 +1,7 @@
 module BouncingBallTypes exposing (..)
 
+import Particle exposing (Particle)
+import Svg exposing (Svg)
 import Time exposing (Time, second)
 
 
@@ -21,6 +23,7 @@ type alias Model =
     { simulatorState : SimulatorState
     , count : Int
     , maxSteps : Int
+    , trajectory : List Particle
     , message : String
     , info : String
     }
