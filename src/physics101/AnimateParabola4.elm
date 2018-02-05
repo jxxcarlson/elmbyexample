@@ -14,6 +14,7 @@ import ColorRecord exposing (..)
 import Particle exposing (Particle)
 import Vector exposing (Vector)
 import Affine
+import Style exposing(..)
 
 
 main =
@@ -35,7 +36,12 @@ type DisplayMode
     = HistoryOn
     | HistoryOff
 
-
+type Msg
+    = Reset
+    | Pause
+    | Run
+    | Step
+    | Tick Time
 
 -- MODEL
 
@@ -43,13 +49,12 @@ type DisplayMode
 type alias Model =
     { simulatorState : SimulatorState
     , count : Int
-    , x_max : Float
-    , y_max : Float
-    , particles : Particles
-    , graphMap : Graph.GraphMap
+    -- , trajectoryDisplay : List (Svg msg)
+    , maxSteps : Int
     , message : String
     , info : String
     }
+
 
 
 
@@ -58,41 +63,75 @@ type alias Model =
 
 start : SimulatorState -> ( Model, Cmd Msg )
 start simulatorState =
-    ( model, Cmd.none )
+    let
+       maxSteps = 350
+    in
+        ( {simulatorState = simulatorState
+          , count = 0
+          , maxSteps = maxSteps
+          -- , trajectoryDisplay = trajectoryDisplay maxSteps
+          , message = "Starting engines"
+          , info = "Hi there"}
+          , Cmd.none
+        )
 
 
-init =
-    start Paused
+init = start Paused
 
-
+viewModel : Model -> List (Svg msg)
+viewModel model =
+  List.drop (model.maxSteps - model.count) (trajectoryDisplay model.maxSteps)
 
 -- UPDATE
 
-
-type Msg
-    = Reset
-    | Pause
-    | Run
-    | Tick Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Reset ->
-            ( model, Cmd.none )
+            reset model
 
         Pause ->
-            ( model, Cmd.none )
+            ( {model | simulatorState =  Paused}, Cmd.none )
 
         Run ->
-            ( model, Cmd.none )
+            ( {model | simulatorState =  Running}, Cmd.none )
+
+        Step ->
+            step model
 
         Tick newTime ->
-            ( model, Cmd.none )
+            tick model
 
 
+step : Model -> (Model, Cmd Msg)
+step model =
+  let
+    newCount = model.count + 1
+    newMessage = (toString newCount)
+  in
+    ({model | count = newCount, message = newMessage}, Cmd.none)
 
+
+reset :  Model -> (Model, Cmd Msg)
+reset model =
+  let
+    newCount = 0
+    newMessage = "t = " ++ (toString newCount)
+  in
+    ({model | count = newCount, message = newMessage, simulatorState = Paused}, Cmd.none)
+
+
+tick : Model -> (Model, Cmd Msg)
+tick model =
+  let
+    newCount = if model.simulatorState == Running && model.count < model.maxSteps then
+      model.count + 1
+    else
+      model.count
+  in
+    ({ model | count = newCount, message = "t = " ++ (toString newCount)}, Cmd.none )
 -- SUBSCRIPTIONS
 
 
@@ -100,22 +139,6 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Time.every (20 * Time.millisecond) Tick
 
-
-renderParticle : Model -> Particle -> S.Svg msg
-renderParticle model particle =
-    Graph.drawCircle model.graphMap particle.circle
-
-
-renderParticles : Model -> List (S.Svg msg)
-renderParticles model =
-    let
-        render =
-            (renderParticle model)
-
-        p =
-            model.particles
-    in
-        [ (render p.a), (render p.b) ]
 
 
 view : Model -> Html Msg
@@ -130,11 +153,12 @@ view model =
             , ( "background-color", "#eee" )
             ]
         ]
-        [ h1 [] [ text "Billiard simulator" ]
+        [ h1 [] [ text "Simulator" ]
         , svg
             [ SA.viewBox "0 0 500 500" ]
-            trajectoryDisplay
+            (viewModel model)
         , br [] []
+        , button [ onClick Step, id "run", buttonStyle ] [ text "Step" ]
         , button [ onClick Run, id "run", buttonStyle ] [ text "Run" ]
         , button [ onClick Pause, id "pause", buttonStyle ] [ text "Pause" ]
         , button [ onClick Reset, id "reset", buttonStyle ] [ text "Reset" ]
@@ -205,16 +229,16 @@ is the result of partial application. It has type signature
     Particle -> Particle
 
 -}
-trajectory : List Particle
-trajectory =
-    Particle.orbit 350 (Particle.update 0.6 field) ball
+trajectory : Int -> List Particle
+trajectory maxSteps =
+    Particle.orbit maxSteps (Particle.update 0.6 field) ball
 
 
 {-| Map the trajectory to a list of Svg msg's to
 obtain a structure that can be displayed.
 -}
-trajectoryDisplay : List (Svg msg)
-trajectoryDisplay =
-    trajectory
+trajectoryDisplay : Int -> List (Svg msg)
+trajectoryDisplay maxSteps =
+    trajectory maxSteps
         |> List.map (Particle.transform coefficients)
         |> List.map Particle.draw
