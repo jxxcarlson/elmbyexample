@@ -3,13 +3,20 @@ module Style exposing (..)
 import Html.Attributes exposing (style)
 
 
+-- ( "margin-left", "35px" )
+--             , ( "margin-top", "25px" )
+--             , ( "padding", "25px 35px 35px 55px" )
+--             , ( "width", "480px" )
+--             , ( "background-color", "#eee" )
+
+
 mainStyle =
     style
         [ ( "margin-left", "35px" )
         , ( "margin-top", "25px" )
         , ( "padding", "25px 35px 35px 55px" )
         , ( "width", "500px" )
-        , ( "height", "500px" )
+        , ( "height", "550px" )
         , ( "background-color", "#eee" )
         ]
 

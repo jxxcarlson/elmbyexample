@@ -1,7 +1,4 @@
-module Affine exposing (Coefficients, make, transform, linearTransform)
-
-{-| M\
--}
+module Affine exposing (Coefficients, linearTransform, make, transform)
 
 import Svg as S exposing (..)
 import Svg.Attributes as SA exposing (..)
@@ -51,7 +48,7 @@ make sourceRect targetRect =
         dd =
             targetRect.corner.y - sourceRect.corner.y + targetRect.size.y
     in
-        { a = aa, b = bb, c = cc, d = dd }
+    { a = aa, b = bb, c = cc, d = dd }
 
 
 {-| affineTransformPoint coefficients is
@@ -66,18 +63,18 @@ transform coefficients point =
         y =
             coefficients.c * point.y + coefficients.d
     in
-        Vector x y
+    Vector x y
 
 
 linearTransform : Transform
 linearTransform coefficients size =
     let
         w =
-            (abs coefficients.a) * size.x
+            abs coefficients.a * size.x
 
         h =
-            (abs coefficients.c) * size.y
+            abs coefficients.c * size.y
 
         -- 5.0 * size.height
     in
-        Vector w h
+    Vector w h

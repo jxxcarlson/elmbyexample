@@ -1,4 +1,4 @@
-module Shape exposing (Shape(..), draw, moveTo, moveBy, transform)
+module Shape exposing (Shape(..), draw, moveBy, moveTo, transform)
 
 {-| The Shape module defines Shape type which can take values
 of the form `Rect data` or `Ellipse data` and which provides
@@ -6,11 +6,11 @@ functions for manipulating these shapes and rendering them
 into SVG.
 -}
 
+import Affine
+import ColorRecord exposing (..)
 import Svg as S exposing (..)
 import Svg.Attributes exposing (..)
-import ColorRecord exposing (..)
 import Vector exposing (Vector)
-import Affine
 
 
 type Shape
@@ -41,7 +41,7 @@ transform coefficients shape =
         newShapeData =
             { shapeData | center = newCenter, dimensions = newDimensions }
     in
-        updateData shape newShapeData
+    updateData shape newShapeData
 
 
 draw : Shape -> S.Svg msg
@@ -89,12 +89,12 @@ moveTo position shape =
         newShapeData =
             { shapeData | center = newCenter }
     in
-        case shape of
-            Rect _ ->
-                Rect newShapeData
+    case shape of
+        Rect _ ->
+            Rect newShapeData
 
-            Ellipse _ ->
-                Ellipse newShapeData
+        Ellipse _ ->
+            Ellipse newShapeData
 
 
 moveBy : Vector -> Shape -> Shape
@@ -112,12 +112,12 @@ moveBy displacement shape =
         newShapeData =
             { shapeData | center = newCenter }
     in
-        case shape of
-            Rect _ ->
-                Rect newShapeData
+    case shape of
+        Rect _ ->
+            Rect newShapeData
 
-            Ellipse _ ->
-                Ellipse newShapeData
+        Ellipse _ ->
+            Ellipse newShapeData
 
 
 svgRectAttributes : ShapeData -> List (Attribute msg)

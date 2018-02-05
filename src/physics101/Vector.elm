@@ -35,21 +35,22 @@ rotate theta v =
             v.y
 
         xx =
-            (cos theta) * x + (sin theta) * y
+            cos theta * x + sin theta * y
 
         yy =
-            -(sin theta) * x + (cos theta) * y
+            -(sin theta) * x + cos theta * y
     in
-        Vector xx yy
+    Vector xx yy
 
 
 angle : Vector -> Vector -> Float
 angle a b =
     let
         ratio =
-            (dot a b) / sqrt ((norm_squared a) * (norm_squared b))
+            dot a b / sqrt (norm_squared a * norm_squared b)
     in
-        acos ratio
+    acos ratio
+
 
 distance : Vector -> Vector -> Float
 distance p q =
@@ -63,4 +64,4 @@ distance p q =
         d_squared =
             dx * dx + dy * dy
     in
-        sqrt d_squared
+    sqrt d_squared

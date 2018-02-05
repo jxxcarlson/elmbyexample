@@ -10,6 +10,7 @@
         "src/crypt",
         "src/vigenere",
         "src/physics101",
+          "src/physics101/app",
         "src/randomNumber",
         "src/billiards"
     ],

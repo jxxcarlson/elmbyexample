@@ -76,12 +76,18 @@ circle =
 so the force is directed downwards,
 -}
 field r =
-  let
-    range = 10
-    strength = 60
-    u = -(r.y/range)
-  in
-  Vector 0 (-5 + strength*e^u)
+    let
+        range =
+            10
+
+        strength =
+            60
+
+        u =
+            -(r.y / range)
+    in
+        Vector 0 (-5 + strength * e ^ u)
+
 
 {-| Particle.make mass position velocity shape
 -}

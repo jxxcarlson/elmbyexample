@@ -1,4 +1,4 @@
-module Parabola2 exposing (..)
+module Parabola3 exposing (..)
 
 {- Parabola shows how to use the Physics module to simulate the motion
    of a particle -- a "ball" -- with given mass, initial position
@@ -21,17 +21,17 @@ module Parabola2 exposing (..)
 
 -}
 
+import Affine
+import ColorRecord exposing (..)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Particle exposing (Particle)
+import Shape exposing (..)
+import Style exposing (..)
 import Svg exposing (Svg, svg)
 import Svg.Attributes as SA
-import Shape exposing (..)
-import ColorRecord exposing (..)
-import Particle exposing (Particle)
 import Vector exposing (Vector)
-import Html exposing (..)
-import Html.Events exposing (..)
-import Html.Attributes exposing (..)
-import Style exposing (..)
-import Affine
 
 
 main : Html msg
@@ -66,7 +66,7 @@ circle : Shape
 circle =
     Ellipse
         { center = Vector 0 0
-        , dimensions = Vector 2 2
+        , dimensions = Vector 1 1
         , strokeColor = redColor
         , fillColor = lightRedColor
         }
@@ -75,14 +75,15 @@ circle =
 {-| Note that we are using screen coordinates,
 so the force is directed downwards,
 -}
-field =
-    Particle.constantField (Vector 0 -5)
+field r =
+    Vector 0 (-5 + (100 - r.y) / 10)
+
 
 {-| Particle.make mass position velocity shape
 -}
 ball : Particle
 ball =
-    Particle.make 10.0 (Vector 5 80) (Vector 3 3) circle
+    Particle.make 10.0 (Vector 5 80) (Vector 0.5 3) circle
 
 
 {-| The trajector is a sist of particles where the nth
@@ -100,7 +101,7 @@ is the result of partial application. It has type signature
 -}
 trajectory : List Particle
 trajectory =
-    Particle.orbit 24 (Particle.update 1.1 field) ball
+    Particle.orbit 140 (Particle.update 1.5 field) ball
 
 
 {-| Map the trajectory to a list of Svg msg's to
