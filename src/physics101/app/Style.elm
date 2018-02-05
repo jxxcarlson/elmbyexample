@@ -16,8 +16,8 @@ mainStyle =
         , ( "margin-top", "25px" )
         , ( "padding", "25px 35px 35px 55px" )
         , ( "width", "500px" )
-        , ( "height", "550px" )
-        , ( "background-color", "#eee" )
+        , ( "height", "600px" )
+        , ( "background-color", "#ddd" )
         ]
 
 

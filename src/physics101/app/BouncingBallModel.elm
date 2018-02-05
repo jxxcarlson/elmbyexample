@@ -12,7 +12,6 @@ import Vector exposing (Vector)
 viewModel : Model -> List (Svg msg)
 viewModel model =
     (List.drop (model.maxSteps - model.count) model.trajectory
-        |> List.map (Particle.transform coefficients)
         |> List.map Particle.draw
     )
         ++ [ floor |> Shape.transform coefficients |> Shape.draw ]
@@ -53,13 +52,13 @@ floor =
 field r =
     let
         range =
-            10
+            5
 
         strength =
-            60
+            200
 
         u =
-            -(r.y / range)
+            -((r.y + 3) / range)
     in
     Vector 0 (-5 + strength * e ^ u)
 
@@ -72,12 +71,12 @@ ball =
 trajectory : Int -> List Particle
 trajectory maxSteps =
     Particle.orbit maxSteps (Particle.update 0.6 field) ball
-
-
-svgTrajectory : Int -> List (Svg msg)
-svgTrajectory maxSteps =
-    (Particle.orbit maxSteps (Particle.update 0.6 field) ball
         |> List.map (Particle.transform coefficients)
+
+
+svgTrajectory : List Particle -> List (Svg msg)
+svgTrajectory particleList =
+    (particleList
         |> List.map Particle.draw
     )
         ++ [ floor |> Shape.transform coefficients |> Shape.draw ]
