@@ -16,6 +16,7 @@ type Msg
     | Pause
     | Run
     | Step
+    | Plot
     | Tick Time
 
 

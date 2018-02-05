@@ -58,6 +58,9 @@ update msg model =
         Step ->
             step model
 
+        Plot ->
+            plotModel model
+
         Tick newTime ->
             tick model
 
@@ -72,6 +75,18 @@ step model =
             toString newCount
     in
     ( { model | count = newCount, message = newMessage }, Cmd.none )
+
+
+plotModel : Model -> ( Model, Cmd Msg )
+plotModel model =
+    let
+        newCount =
+            model.maxSteps
+
+        newMessage =
+            toString newCount
+    in
+    ( { model | count = newCount, message = newMessage, simulatorState = Paused }, Cmd.none )
 
 
 reset : Model -> ( Model, Cmd Msg )
@@ -108,15 +123,14 @@ view model =
     div
         [ mainStyle ]
         [ h1 [] [ text "Simulator: Bouncing Ball" ]
-        , svg
-            [ SA.viewBox "0 0 500 500" ]
-            (viewModel model)
+        , svg [ width 500, height 500 ] [ viewModel model ]
         , br [] []
         , br [] []
         , button [ onClick Step, id "run", buttonStyle ] [ text "Step" ]
         , button [ onClick Run, id "run", buttonStyle ] [ text "Run" ]
         , button [ onClick Pause, id "pause", buttonStyle ] [ text "Pause" ]
         , button [ onClick Reset, id "reset", buttonStyle ] [ text "Reset" ]
+        , button [ onClick Plot, id "plot", buttonStyle ] [ text "Plot" ]
         , span [ id "message", labelStyle ] [ text model.message ]
         , br [] []
         , br [] []

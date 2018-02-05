@@ -6,14 +6,33 @@ import ColorRecord exposing (..)
 import Particle exposing (Particle)
 import Shape exposing (..)
 import Svg exposing (Svg, svg)
+import Svg.Attributes as SA
+import Svg.Lazy
 import Vector exposing (Vector)
 
 
-viewModel : Model -> List (Svg msg)
+viewModel : Model -> Svg msg
 viewModel model =
-    List.drop (model.maxSteps - model.count) model.trajectory
-        |> svgTrajectory
-        |> (\x -> [ x ])
+    let
+        particleList =
+            List.drop (model.maxSteps - model.count) model.trajectory
+    in
+    Svg.Lazy.lazy svgTrajectory particleList
+
+
+trajectory : Int -> List Particle
+trajectory maxSteps =
+    Particle.orbit maxSteps (Particle.update 0.6 field) ball
+        |> List.map (Particle.transform coefficients)
+
+
+svgTrajectory : List Particle -> Svg msg
+svgTrajectory particleList =
+    (particleList
+        |> List.map Particle.draw
+    )
+        ++ [ floor |> Shape.transform coefficients |> Shape.draw ]
+        |> Svg.g [ SA.viewBox "0 0 500 500" ]
 
 
 sourceRect =
@@ -65,18 +84,3 @@ field r =
 ball : Particle
 ball =
     Particle.make 10.0 (Vector 5 80) (Vector 0.5 3) circle
-
-
-trajectory : Int -> List Particle
-trajectory maxSteps =
-    Particle.orbit maxSteps (Particle.update 0.6 field) ball
-        |> List.map (Particle.transform coefficients)
-
-
-svgTrajectory : List Particle -> Svg msg
-svgTrajectory particleList =
-    (particleList
-        |> List.map Particle.draw
-    )
-        ++ [ floor |> Shape.transform coefficients |> Shape.draw ]
-        |> Svg.g []
