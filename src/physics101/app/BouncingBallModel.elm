@@ -13,6 +13,12 @@ import Vector exposing (Vector)
 
 viewModel : Model -> Svg msg
 viewModel model =
+    List.drop (model.maxSteps - model.count) model.trajectory
+        |> svgTrajectory
+
+
+viewModel1 : Model -> Svg msg
+viewModel1 model =
     let
         particleList =
             List.drop (model.maxSteps - model.count) model.trajectory
@@ -20,10 +26,13 @@ viewModel model =
     Svg.Lazy.lazy svgTrajectory particleList
 
 
-trajectory : Int -> List Particle
-trajectory maxSteps =
-    Particle.orbit maxSteps (Particle.update 0.6 field) ball
-        |> List.map (Particle.transform coefficients)
+viewModel2 : Model -> Svg msg
+viewModel2 model =
+    let
+        particleList =
+            List.drop (model.maxSteps - model.count) model.trajectory
+    in
+    Svg.Lazy.lazy svgTrajectory particleList
 
 
 svgTrajectory : List Particle -> Svg msg
@@ -33,6 +42,22 @@ svgTrajectory particleList =
     )
         ++ [ floor |> Shape.transform coefficients |> Shape.draw ]
         |> Svg.g [ SA.viewBox "0 0 500 500" ]
+
+
+
+-- ilias [12:56 PM]
+-- Yeah, that's a different `particleList` at every step. It works quite smoothly
+-- on my end, even with `lazy` here making it potentially slower. One option
+-- is to do "batches". Say you round the entries in the lazily rendered
+-- list down to a multiple of 50, then "live" render the the rest. That _might_ be reasonably efficient.
+-- so you'd have something like
+-- `svg [ viewBox "0 0 500 500"  [ lazy svgTrajectory (do maths here and list.drop stuff), g [] (List.map Particle.draw (more maths and List.take), floor-and-transform-it ]`
+
+
+trajectory : Int -> List Particle
+trajectory maxSteps =
+    Particle.orbit maxSteps (Particle.update 0.6 field) ball
+        |> List.map (Particle.transform coefficients)
 
 
 sourceRect =

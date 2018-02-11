@@ -2,11 +2,10 @@ module CaesarApp exposing (..)
 
 {- A very basic app that demonstrates the Caesar Cipher. -}
 
-import Char
+import CaesarCipher exposing (encryptWithCaesar)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
-import CaesarCipher exposing(encryptWithCaesar)
 
 
 main =
@@ -26,7 +25,7 @@ type alias Model =
 
 model : Model
 model =
-    Model "" "" 0
+    { plainText = "", cipherText = "", key = 0 }
 
 
 
@@ -43,17 +42,24 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         PlainText plainText ->
-            { model | plainText = plainText }
+            let
+                cipherText =
+                    encryptWithCaesar model.key plainText
+            in
+                { model | plainText = plainText, cipherText = cipherText }
 
         CipherText cipherText ->
             { model | cipherText = cipherText }
 
         Key keyString ->
-          let
-            key = String.toInt keyString |> Result.withDefault 0
-            cipherText = encryptWithCaesar key model.plainText
-          in
-            { model | key = key, cipherText = cipherText }
+            let
+                key =
+                    String.toInt keyString |> Result.withDefault 0
+
+                cipherText =
+                    encryptWithCaesar key model.plainText
+            in
+                { model | key = key, cipherText = cipherText }
 
 
 
@@ -63,32 +69,51 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div
-        [ mainStyle
+        [ mainStyle ]
+        [ heading
+        , textInput
+        , keyInput
+        , cipherTextDisplay model
+        , message
         ]
-        [ h1
-            [ headingStyle ]
-            [ text "Caesar cipher" ]
-        , input
-            [ type_ "text"
-            , plainTextInputStyle
-            , placeholder "Plain text"
-            , onInput PlainText
-            ]
-            []
-        , input
-            [ keyInputStyle
-            , type_ "text"
-            , placeholder "key"
-            , onInput Key
-            ]
-            []
-        , p
-            [ encryptedTextStyle ]
-            [ text model.cipherText ]
-        , p
-            [ labeStyle ]
-            [ text "Enter a word in 'Plain text' and an integer in 'key'" ]
+
+
+heading =
+    h1
+        [ headingStyle ]
+        [ text "Caesar cipher" ]
+
+
+textInput =
+    input
+        [ type_ "text"
+        , plainTextInputStyle
+        , placeholder "Plain text"
+        , onInput PlainText
         ]
+        []
+
+
+cipherTextDisplay model =
+    div
+        [ encryptedTextStyle ]
+        [ text model.cipherText ]
+
+
+keyInput =
+    input
+        [ keyInputStyle
+        , type_ "text"
+        , placeholder "key"
+        , onInput Key
+        ]
+        []
+
+
+message =
+    div
+        [ labeStyle ]
+        [ text "Enter a word in 'Plain text' and an integer in 'key'" ]
 
 
 
@@ -100,6 +125,7 @@ mainStyle =
         [ ( "width", "300px" )
         , ( "height", "300px" )
         , ( "padding", "15px" )
+        , ( "margin", "40px" )
         , ( "background-color", "rgb(140,140,140" )
         ]
 
@@ -116,7 +142,7 @@ plainTextInputStyle =
 
 
 keyInputStyle =
-    style [ ( "width", "65px" ), ( "margin-left", "15px" ), ( "font-size", "14pt" ) ]
+    style [ ( "width", "65px" ), ( "margin-top", "15px" ), ( "font-size", "14pt" ) ]
 
 
 encryptedTextStyle =
@@ -125,6 +151,7 @@ encryptedTextStyle =
         , ( "height", "32px" )
         , ( "font-size", "18pt" )
         , ( "padding", "4px" )
+        , ( "margin-top", "15px" )
         , ( "background-color", "rgb(160, 110, 110)" )
         , ( "color", "white" )
         ]
