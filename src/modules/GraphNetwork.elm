@@ -2,6 +2,7 @@ module GraphNetwork exposing(..)
 
 import Vector exposing(Vector)
 import List.Extra
+import Shape
 
 -- Ellie: https://ellie-app.com/nP53PWDPya1/0
 
@@ -101,10 +102,14 @@ getEdges network indexedNetworkVertices node =
       Nothing -> []
 
 
+renderVertices : List Vector -> List Shape
+renderVertices centers =
+  centers |> List.map (\center -> Ellipse center (Vector 0.1 0.1) 
+
 {- Example -}
 
 exVertices = networkVertices net1
 
 exIndexedVertices = indexedNetworkVertices net1
 
-exEdges = List.map (getEdges net1 exIndexedVertices) net1 
+exEdges = List.map (getEdges net1 exIndexedVertices) net1
