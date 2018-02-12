@@ -4,6 +4,8 @@ module Vector exposing (..)
 type alias Vector =
     { x : Float, y : Float }
 
+type alias DirectedSegment =
+  { a:  Vector, b: Vector }
 
 dot : Vector -> Vector -> Float
 dot a b =
