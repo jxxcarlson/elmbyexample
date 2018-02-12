@@ -4,6 +4,7 @@ import Vector exposing (Vector)
 import List.Extra
 import Shape exposing (..)
 import ColorRecord exposing (..)
+import Line exposing (..)
 
 
 -- Ellie: https://ellie-app.com/nP53PWDPya1/0
@@ -42,8 +43,12 @@ n4 =
     Node 4 "D" On [ 1 ]
 
 
+n5 =
+    Node 5 "E" On [ 4, 3 ]
+
+
 net1 =
-    [ n1, n2, n3, n4 ]
+    [ n1, n2, n3, n4, n5 ]
 
 
 printNetwork : Network -> String
@@ -148,16 +153,30 @@ getEdges network indexedNetworkVertices node =
 
 renderVertices : List Vector -> List Shape
 renderVertices centers =
-    centers |> List.map (\center -> makeCircle center)
+    let
+        size =
+            0.5 / (toFloat (List.length centers))
+    in
+        centers |> List.map (\center -> makeCircle size center)
 
 
-makeCircle : Vector -> Shape
-makeCircle center =
+renderEdges : List Vector.DirectedSegment -> List Line
+renderEdges edges =
+    edges |> List.map (\edge -> makeLine edge)
+
+
+makeCircle : Float -> Vector -> Shape
+makeCircle size center =
     let
         shapeData =
-            ShapeData center (Vector 0.1 0.1) ColorRecord.blueColor ColorRecord.blueColor
+            ShapeData center (Vector size size) ColorRecord.lightBlueColor ColorRecord.lightBlueColor
     in
         Ellipse shapeData
+
+
+makeLine : Vector.DirectedSegment -> Line
+makeLine segment =
+    Line segment.a segment.b 2.5 ColorRecord.blackColor ColorRecord.blackColor
 
 
 

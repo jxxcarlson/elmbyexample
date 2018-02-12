@@ -9,6 +9,7 @@ import Shape exposing (..)
 import ColorRecord exposing (..)
 import Vector exposing (Vector)
 import Affine
+import Line exposing (..)
 
 
 main : Html msg
@@ -21,15 +22,26 @@ display =
     div [ mainStyle ]
         [ svg
             [ SA.viewBox "0 0 500 500" ]
-            trajectoryDisplay
+            networkDisplay
         ]
 
 
-trajectoryDisplay : List (Svg msg)
-trajectoryDisplay =
-    renderVertices exVertices
-        |> List.map
-        |> List.map Shape.draw
+networkDisplay : List (Svg msg)
+networkDisplay =
+    let
+        vertices =
+            renderVertices exVertices
+                |> List.map (Shape.transform coefficients)
+                |> List.map Shape.draw
+
+        edges =
+            exEdges
+                |> List.concat
+                |> renderEdges
+                |> List.map (Line.transform coefficients)
+                |> List.map Line.draw
+    in
+        edges ++ vertices
 
 
 sourceRect =
@@ -37,7 +49,7 @@ sourceRect =
 
 
 targetRect =
-    { corner = Vector 0 0, size = Vector 500 500 }
+    { corner = Vector 150 0, size = Vector 200 200 }
 
 
 coefficients =

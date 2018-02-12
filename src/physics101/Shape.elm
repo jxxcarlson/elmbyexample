@@ -17,7 +17,6 @@ type Shape
     = Rect ShapeData
     | Ellipse ShapeData
 
-
 type alias ShapeData =
     { center : Vector
     , dimensions : Vector
@@ -25,6 +24,13 @@ type alias ShapeData =
     , fillColor : ColorRecord
     }
 
+type alias Line =
+      { a : Vector
+      , b : Vector
+      , width : Float
+      , strokeColor : ColorRecord
+      , fillColor : ColorRecord
+      }
 
 transform : Affine.Coefficients -> Shape -> Shape
 transform coefficients shape =
