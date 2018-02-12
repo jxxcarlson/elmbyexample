@@ -21,6 +21,9 @@ add : Vector -> Vector -> Vector
 add v w =
     Vector (v.x + w.x) (v.y + w.y)
 
+sub : Vector -> Vector -> Vector
+sub v w =
+    Vector (v.x - w.x) (v.y - w.y)
 
 mul : Float -> Vector -> Vector
 mul c v =

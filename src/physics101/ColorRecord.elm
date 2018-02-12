@@ -33,6 +33,10 @@ lightRedColor : ColorRecord
 lightRedColor =
     ColorRecord 255 0 0 0.4
 
+mutedRedColor : ColorRecord
+mutedRedColor =
+    ColorRecord 204 0 0 1.0
+
 
 yellowColor : ColorRecord
 yellowColor =
@@ -47,6 +51,19 @@ greenColor =
 blueColor : ColorRecord
 blueColor =
     ColorRecord 0 0 255 1.0
+
+lightBlueColor : ColorRecord
+lightBlueColor =
+    ColorRecord 110 110 255 1.0
+
+
+mutedBlueColor : ColorRecord
+mutedBlueColor =
+    ColorRecord 80 80 204 1.0
+
+mutedCyanColor : ColorRecord
+mutedCyanColor =
+    ColorRecord 0 204 204 1.0
 
 
 transparentColor : ColorRecord
