@@ -1,4 +1,4 @@
-module GraphDemo exposing (main)
+module GraphDemo exposing (..)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
@@ -40,7 +40,7 @@ vertices =
 
 
 edges =
-    [ ( 1, 2 ), ( 1, 3 ), ( 1, 4 ), ( 2, 3 ), ( 3, 4 ), ( 3, 5 ) ]
+    [ ( 1, 2 ), ( 1, 3 ), ( 1, 4 ), ( 2, 3 ) ]
 
 
 testGraph =

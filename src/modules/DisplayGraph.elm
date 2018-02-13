@@ -134,4 +134,20 @@ graphDisplay coefficients graph =
                 |> List.map (Line.transform coefficients)
                 |> List.map Line.draw
     in
-        renderedSegments ++ renderedPoints
+        renderedSegments ++ renderedPoints ++ [ renderedBoundingBox ]
+
+
+boundingBoxData =
+    { center = (Vector 0 0)
+    , dimensions = (Vector 2 2)
+    , strokeColor = ColorRecord.blackColor
+    , fillColor = ColorRecord.blackColor
+    }
+
+
+boundingBox =
+    Shape.Ellipse boundingBoxData
+
+
+renderedBoundingBox =
+    Shape.draw boundingBox

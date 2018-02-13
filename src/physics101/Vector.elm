@@ -4,8 +4,10 @@ module Vector exposing (..)
 type alias Vector =
     { x : Float, y : Float }
 
+
 type alias DirectedSegment =
-  { a:  Vector, b: Vector }
+    { a : Vector, b : Vector }
+
 
 dot : Vector -> Vector -> Float
 dot a b =
@@ -21,9 +23,11 @@ add : Vector -> Vector -> Vector
 add v w =
     Vector (v.x + w.x) (v.y + w.y)
 
+
 sub : Vector -> Vector -> Vector
 sub v w =
     Vector (v.x - w.x) (v.y - w.y)
+
 
 mul : Float -> Vector -> Vector
 mul c v =
@@ -40,12 +44,12 @@ rotate theta v =
             v.y
 
         xx =
-            cos theta * x + sin theta * y
+            cos theta * x - sin theta * y
 
         yy =
-            -(sin theta) * x + cos theta * y
+            (sin theta) * x + cos theta * y
     in
-    Vector xx yy
+        Vector xx yy
 
 
 angle : Vector -> Vector -> Float
@@ -54,7 +58,7 @@ angle a b =
         ratio =
             dot a b / sqrt (norm_squared a * norm_squared b)
     in
-    acos ratio
+        acos ratio
 
 
 distance : Vector -> Vector -> Float
@@ -69,4 +73,4 @@ distance p q =
         d_squared =
             dx * dx + dy * dy
     in
-    sqrt d_squared
+        sqrt d_squared
