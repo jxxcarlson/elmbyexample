@@ -1,4 +1,4 @@
-module Shape exposing (Shape(..), ShapeData, draw, moveBy, moveTo, transform)
+module Shape exposing (Shape(..), ShapeData, draw, moveBy, moveTo, scaleBy, transform)
 
 {-| The Shape module defines Shape type which can take values
 of the form `Rect data` or `Ellipse data` and which provides
@@ -17,6 +17,7 @@ type Shape
     = Rect ShapeData
     | Ellipse ShapeData
 
+
 type alias ShapeData =
     { center : Vector
     , dimensions : Vector
@@ -24,13 +25,6 @@ type alias ShapeData =
     , fillColor : ColorRecord
     }
 
-type alias Line =
-      { a : Vector
-      , b : Vector
-      , width : Float
-      , strokeColor : ColorRecord
-      , fillColor : ColorRecord
-      }
 
 transform : Affine.Coefficients -> Shape -> Shape
 transform coefficients shape =
@@ -117,6 +111,35 @@ moveBy displacement shape =
 
         newShapeData =
             { shapeData | center = newCenter }
+    in
+        case shape of
+            Rect _ ->
+                Rect newShapeData
+
+            Ellipse _ ->
+                Ellipse newShapeData
+
+
+scaleBy : Float -> Shape -> Shape
+scaleBy factor shape =
+    let
+        shapeData =
+            data shape
+
+        center =
+            shapeData.center
+
+        newCenter =
+            { center | x = factor * center.x, y = factor * center.y }
+
+        dimensions =
+            shapeData.dimensions
+
+        newDimensions =
+            { dimensions | x = factor * dimensions.x, y = factor * dimensions.y }
+
+        newShapeData =
+            { shapeData | center = newCenter, dimensions = newDimensions }
     in
         case shape of
             Rect _ ->

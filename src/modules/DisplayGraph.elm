@@ -6,7 +6,6 @@ import Shape exposing (..)
 import ColorRecord exposing (..)
 import Line exposing (..)
 import Svg exposing (Svg)
-import Affine
 
 
 type alias Vertex =
@@ -110,9 +109,12 @@ makeLine segment =
     Line segment.a segment.b 2.5 ColorRecord.blackColor ColorRecord.blackColor
 
 
-graphDisplay : Affine.Coefficients -> Graph -> List (Svg msg)
-graphDisplay coefficients graph =
+graphDisplay : Float -> Graph -> List (Svg msg)
+graphDisplay scale graph =
     let
+        k =
+            0.8
+
         points =
             getPoints graph
 
@@ -125,29 +127,30 @@ graphDisplay coefficients graph =
 
         renderedPoints =
             renderPoints points
-                |> List.map (Shape.transform coefficients)
+                |> List.map (Shape.scaleBy (k * scale))
+                |> List.map (Shape.moveBy (Vector scale scale))
                 |> List.map Shape.draw
 
         renderedSegments =
             segments
                 |> renderSegments
-                |> List.map (Line.transform coefficients)
+                |> List.map (Line.scaleBy (k * scale))
+                |> List.map (Line.moveBy (Vector scale scale))
                 |> List.map Line.draw
     in
-        renderedSegments ++ renderedPoints ++ [ renderedBoundingBox ]
+        renderedSegments ++ renderedPoints ++ [ boundingBox scale ]
 
 
 boundingBoxData =
     { center = (Vector 0 0)
     , dimensions = (Vector 2 2)
     , strokeColor = ColorRecord.blackColor
-    , fillColor = ColorRecord.blackColor
+    , fillColor = ColorRecord.transparentBlueColor
     }
 
 
-boundingBox =
-    Shape.Ellipse boundingBoxData
-
-
-renderedBoundingBox =
-    Shape.draw boundingBox
+boundingBox scale =
+    Rect boundingBoxData
+        |> Shape.scaleBy (1.2 * scale)
+        |> (Shape.moveBy (Vector (1.07 * scale) (scale)))
+        |> Shape.draw

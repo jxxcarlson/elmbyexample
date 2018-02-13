@@ -1,5 +1,4 @@
-module Line  exposing(..)
-
+module Line exposing (..)
 
 {-| The Shape module defines Shape type which can take values
 of the form `Rect data` or `Ellipse data` and which provides
@@ -15,12 +14,13 @@ import Vector exposing (Vector)
 
 
 type alias Line =
-      { a : Vector
-      , b : Vector
-      , width : Float
-      , strokeColor : ColorRecord
-      , fillColor : ColorRecord
-      }
+    { a : Vector
+    , b : Vector
+    , width : Float
+    , strokeColor : ColorRecord
+    , fillColor : ColorRecord
+    }
+
 
 transform : Affine.Coefficients -> Line -> Line
 transform coefficients line =
@@ -30,9 +30,8 @@ transform coefficients line =
 
         newB =
             Affine.transform coefficients line.b
-
     in
-        {line | a = newA, b = newB}
+        { line | a = newA, b = newB }
 
 
 draw : Line -> S.Svg msg
@@ -43,8 +42,11 @@ draw line =
 moveTo : Vector -> Line -> Line
 moveTo position line =
     let
-        displacement = Vector.sub line.b line.a
-        newB = Vector.add displacement position
+        displacement =
+            Vector.sub line.b line.a
+
+        newB =
+            Vector.add displacement position
     in
         { line | a = position, b = newB }
 
@@ -52,10 +54,25 @@ moveTo position line =
 moveBy : Vector -> Line -> Line
 moveBy displacement line =
     let
-        newA  = Vector.add displacement line.a
-        newB  = Vector.add displacement line.b
+        newA =
+            Vector.add displacement line.a
+
+        newB =
+            Vector.add displacement line.b
     in
-      {line | a = newA, b = newB}
+        { line | a = newA, b = newB }
+
+
+scaleBy : Float -> Line -> Line
+scaleBy factor line =
+    let
+        newA =
+            Vector.mul factor line.a
+
+        newB =
+            Vector.mul factor line.b
+    in
+        { line | a = newA, b = newB }
 
 
 lineAttributes : Line -> List (Attribute msg)

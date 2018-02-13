@@ -18,21 +18,13 @@ display : Html msg
 display =
     div [ mainStyle ]
         [ svg
-            [ SA.viewBox "0 0 500 500" ]
-            (graphDisplay coefficients testGraph)
+            [ SA.viewBox "-40 -50 300 300" ]
+            (graphDisplay 100 testGraph)
         ]
 
 
-sourceRect =
-    { corner = Vector -1 -1, size = Vector 2 2 }
-
-
-targetRect =
-    { corner = Vector 150 0, size = Vector 200 200 }
-
-
-coefficients =
-    Affine.make sourceRect targetRect
+testGraph =
+    Graph vertices edges
 
 
 vertices =
@@ -40,19 +32,14 @@ vertices =
 
 
 edges =
-    [ ( 1, 2 ), ( 1, 3 ), ( 1, 4 ), ( 2, 3 ) ]
-
-
-testGraph =
-    Graph vertices edges
+    [ ( 1, 2 ), ( 2, 3 ), ( 3, 4 ), ( 4, 5 ), ( 5, 1 ) ]
 
 
 mainStyle =
     style
-        [ ( "margin-left", "35px" )
-        , ( "margin-top", "25px" )
-        , ( "padding", "25px 35px 35px 55px" )
-        , ( "width", "500px" )
-        , ( "height", "500px" )
+        [ ( "margin-left", "30px" )
+        , ( "margin-top", "30px" )
+        , ( "width", "400px" )
+        , ( "height", "400px" )
         , ( "background-color", "#ddd" )
         ]
