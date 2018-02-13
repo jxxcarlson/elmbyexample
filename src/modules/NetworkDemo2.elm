@@ -1,15 +1,12 @@
 module Bars2App exposing (main)
 
-import Html exposing (Html, div, table, td, text, tr)
+import Html exposing (Html, div)
 import Html.Attributes exposing (..)
-import Svg exposing (Svg, rect, svg)
+import Svg exposing (svg)
 import Svg.Attributes as SA
-import GraphNetwork exposing (..)
-import Shape exposing (..)
-import ColorRecord exposing (..)
+import GraphNetwork2 exposing (..)
 import Vector exposing (Vector)
 import Affine
-import Line exposing (..)
 
 
 main : Html msg
@@ -22,26 +19,8 @@ display =
     div [ mainStyle ]
         [ svg
             [ SA.viewBox "0 0 500 500" ]
-            networkDisplay
+            (networkDisplay coefficients net1)
         ]
-
-
-networkDisplay : List (Svg msg)
-networkDisplay =
-    let
-        vertices =
-            renderVertices exVertices
-                |> List.map (Shape.transform coefficients)
-                |> List.map Shape.draw
-
-        edges =
-            exEdges
-                |> List.concat
-                |> renderEdges
-                |> List.map (Line.transform coefficients)
-                |> List.map Line.draw
-    in
-        edges ++ vertices
 
 
 sourceRect =
@@ -54,10 +33,6 @@ targetRect =
 
 coefficients =
     Affine.make sourceRect targetRect
-
-
-rv =
-    renderVertices exVertices
 
 
 mainStyle =

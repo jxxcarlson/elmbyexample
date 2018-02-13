@@ -1,10 +1,12 @@
-module GraphNetwork exposing (..)
+module GraphNetwork2 exposing (..)
 
 import Vector exposing (Vector)
 import List.Extra
 import Shape exposing (..)
 import ColorRecord exposing (..)
 import Line exposing (..)
+import Svg exposing (Svg)
+import Affine
 
 
 -- Ellie: https://ellie-app.com/nP53PWDPya1/0
@@ -36,7 +38,7 @@ n2 =
 
 
 n3 =
-    Node 3 "C" On [ 4 ]
+    Node 3 "C" On []
 
 
 n4 =
@@ -177,6 +179,33 @@ makeCircle size center =
 makeLine : Vector.DirectedSegment -> Line
 makeLine segment =
     Line segment.a segment.b 2.5 ColorRecord.blackColor ColorRecord.blackColor
+
+
+networkDisplay : Affine.Coefficients -> Network -> List (Svg msg)
+networkDisplay coefficients network =
+    let
+        vertices_ =
+            networkVertices network
+
+        indexedVertices_ =
+            indexedNetworkVertices network
+
+        edges_ =
+            List.map (getEdges network indexedVertices_) network
+
+        vertices =
+            renderVertices vertices_
+                |> List.map (Shape.transform coefficients)
+                |> List.map Shape.draw
+
+        edges =
+            edges_
+                |> List.concat
+                |> renderEdges
+                |> List.map (Line.transform coefficients)
+                |> List.map Line.draw
+    in
+        edges ++ vertices
 
 
 
