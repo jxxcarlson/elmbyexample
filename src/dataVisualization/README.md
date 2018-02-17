@@ -1,3 +1,5 @@
+![TimeSeries](./randomWalk1.png)
+
 TimeSeries
 ==========
 
@@ -18,4 +20,5 @@ repeatedly add random elements of {+1, -1}.
 The server can be modified to generate other "time series."
 
 The main idea is demonstrate the producer-consumer relation
-between a generator of data and a visualizer for it.
+between a generator of data and a visualizer for it.  You will
+get images like the one above.
