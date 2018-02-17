@@ -66,7 +66,7 @@ update msg model =
 
 
 
--- VIEW
+{- VIEW -}
 
 
 view model =
@@ -80,40 +80,13 @@ view model =
         ]
 
 
-barWidth model =
-    450.0 / (toFloat (List.length model.data))
-
-
-scale : Float -> List Float -> List Float
-scale k data =
-    List.map (\datum -> k * datum) data
-
-
-scaleData : List Float -> List Float
-scaleData data =
-    let
-        m =
-            data |> List.map abs |> List.maximum |> Maybe.withDefault 1.0
-    in
-        scale (1.0 / m) data
-
-
 displayResult : List Float -> String
 displayResult data =
     data |> List.map (roundTo 3) |> toString
 
 
-roundTo : Int -> Float -> Float
-roundTo digits value =
-    let
-        factor =
-            10 ^ digits |> toFloat
-    in
-        value
-            |> (\x -> x * factor)
-            |> round
-            |> toFloat
-            |> (\x -> x / factor)
+barWidth model =
+    450.0 / (toFloat (List.length model.data))
 
 
 messageLine message =
@@ -121,7 +94,7 @@ messageLine message =
 
 
 
--- RANDOM NUMBER STUFF
+{- DATA -}
 
 
 getData : Cmd Msg
@@ -144,6 +117,37 @@ dataUrl dataSize =
 dataDecoder : Decoder (List Float)
 dataDecoder =
     (list float)
+
+
+roundTo : Int -> Float -> Float
+roundTo digits value =
+    let
+        factor =
+            10 ^ digits |> toFloat
+    in
+        value
+            |> (\x -> x * factor)
+            |> round
+            |> toFloat
+            |> (\x -> x / factor)
+
+
+scale : Float -> List Float -> List Float
+scale k data =
+    List.map (\datum -> k * datum) data
+
+
+scaleData : List Float -> List Float
+scaleData data =
+    let
+        m =
+            data |> List.map abs |> List.maximum |> Maybe.withDefault 1.0
+    in
+        scale (1.0 / m) data
+
+
+
+{- BAR GRAPH -}
 
 
 barGraph : Float -> Float -> String -> List Float -> List (Html.Html msg)
