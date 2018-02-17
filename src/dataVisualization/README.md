@@ -13,7 +13,7 @@ Directions:
 3. Click on `Get Data`
 
 When you did this, the request "/data=100" was sent
-to http://localhost:800. That server generated a sequence
+to http://localhost:8000. That server generated a sequence
 of integers by doing a random walk: start with zero, then
 repeatedly add random elements of {+1, -1}.
 
@@ -22,3 +22,9 @@ The server can be modified to generate other "time series."
 The main idea is demonstrate the producer-consumer relation
 between a generator of data and a visualizer for it.  You will
 get images like the one above.
+
+If you want serve data from a file, use `dataFileServer.py` instead,
+and put the data in `data.txt`. The data there can be deposited by
+another app if you want.  This way the data producer, data server,
+and data client (the Elm visualizer) are independent of one another
+and can be written in different languages.    
