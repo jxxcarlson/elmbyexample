@@ -13,7 +13,8 @@
         "src/physics101",
         "src/physics101/app",
         "src/randomNumber",
-        "src/billiards"
+        "src/billiards",
+        "src/svg"
     ],
     "exposed-modules": [],
     "dependencies": {
