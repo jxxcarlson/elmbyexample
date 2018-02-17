@@ -104,17 +104,17 @@ view model =
         [ div [ displayStyle ] [ showGraph model ]
         , basicButton GetData "Get data"
         , basicButton ToggleDisplay "Toggle display"
-        , span [ labelStyle ] [ text "Number of data points" ]
-        , parameterInput model
-        , messageLine "14   0px" (displayResult model.data)
+        , span [ labelStyle "50px" ] [ text "Number of data points" ]
+        , parameterInput "50px" model
         , messageLine "12px" model.message
+        , messageLine "" (displayResult model.data)
         ]
 
 
-parameterInput model =
+parameterInput width model =
     input
         [ type_ "text"
-        , inputStyle
+        , inputStyle width
         , placeholder "???"
         , onInput GetParameter
         ]
