@@ -1,4 +1,8 @@
+Option 1.
+
 ![Bar graph of random walk](./image/barGraph.png)
+
+Option 2.
 
 ![Line graph of random walk](./image/lineGraph.png)
 

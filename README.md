@@ -25,6 +25,8 @@ Lower case names are folders, upper case names are modules.
 * crypt -- Two apps for playing with encryption
     - CaesarApp
     - VigenereApp
+* dataVisualization -- grab data from server and visualize
+    it using Elm.  See Readme
 * dice
     - Dice1App -- basic program with randomness -- throw one die
     - Dice2App -- the same as Dice1, but with CSS styling
@@ -32,7 +34,7 @@ Lower case names are folders, upper case names are modules.
     - People -- working with records
     - MaybePeople -- segue into the Maybe Type
     - Poker	-- working with union types
-* physics101 -- Static image simulation of a ball tossed into the air
+* physics101 -- this has moved to https://github.com/jxxcarlson/particle
 * random: RandomNumberApp  -- simple http request to get random integer
 * svg
     - Svg1App  -- draw a circle on a light-colored background
