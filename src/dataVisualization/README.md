@@ -1,4 +1,6 @@
-![TimeSeries](./randomWalk1.png)
+![Bar graph of random walk](./image/barGraph.png)
+
+![Line graph of random walk](./image/lineGraph.png)
 
 TimeSeries
 ==========
