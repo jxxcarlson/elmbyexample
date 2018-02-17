@@ -9,12 +9,16 @@ Option 2.
 TimeSeries
 ==========
 
+An app for visualizing time series data provided by
+a web server.  
+
 Directions:
 
-1. Do `chmod u+x dataServer.py` to make the data server
-   executable.  Then run `./dataServer.py 8000`
+1. Do `cd servers; chmod u+x dataServer.py` to make the data server
+   executable.  Then run `./dataServer.py 8000`.  The data server
+   is now running.
 
-2. Run `elm make TimeSeries.elm`. Then open `index.html`
+2. Return to the root of this folder and run `elm make src/TimeSeries.elm`. Then open `index.html`
 
 3. Click on `Get Data`
 
