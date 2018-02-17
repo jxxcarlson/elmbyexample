@@ -13,8 +13,8 @@ Directions:
 3. Click on `Get Data`
 
 When you did this, the request "/data=100" was sent
-to http://localhost:8000. That server generated a sequence
-of integers by doing a random walk: start with zero, then
+to the server at http://localhost:8000. The server generated a sequence
+of 100 integers by doing a random walk: start with zero, then
 repeatedly add random elements of {+1, -1}.
 
 The server can be modified to generate other "time series."
