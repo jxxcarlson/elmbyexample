@@ -40,6 +40,10 @@ legendStyle height =
         ]
 
 
+inputStyle =
+    style [ ( "width", "60x" ), ( "font-size", "12pt" ) ]
+
+
 messageStyle =
     style
         [ ( "width", "58  0px" )
@@ -58,4 +62,11 @@ buttonStyle =
         , ( "color", "#fff" )
         , ( "padding", "12px" )
         , ( "margin-top", "15px" )
+        ]
+
+
+labelStyle =
+    style
+        [ ( "margin-left", "20px" )
+        , ( "margin-right", "8px" )
         ]

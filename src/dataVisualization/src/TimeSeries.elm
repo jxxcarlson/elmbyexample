@@ -3,8 +3,9 @@ module TimeSeries exposing (..)
 {- This app retrieves random numbers from www.random.org -}
 
 import Json.Decode as Decode exposing (Decoder, list, float)
-import Html exposing (div, text, button)
-import Html.Events exposing (onClick)
+import Html exposing (div, span, text, button, input)
+import Html.Attributes exposing (type_, placeholder)
+import Html.Events exposing (onClick, onInput)
 import Http
 import StyleForTimeSeries exposing (..)
 import LineGraph exposing (makeLineGraph)
@@ -24,6 +25,7 @@ main =
 type alias Model =
     { data : List Float
     , displayType : DisplayType
+    , parameter : Int
     , message : String
     }
 
@@ -32,6 +34,7 @@ init : ( Model, Cmd Msg )
 init =
     ( { data = []
       , displayType = Bar
+      , parameter = 100
       , message = "Starting up ..."
       }
     , Cmd.none
@@ -51,6 +54,7 @@ type Msg
     = NewData (Result Http.Error (List Float))
     | GetData
     | ToggleDisplay
+    | GetParameter String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -73,10 +77,13 @@ update msg model =
             )
 
         GetData ->
-            ( { model | message = "Request" }, getData )
+            ( { model | message = "Request" }, getData model )
 
         ToggleDisplay ->
             ( { model | displayType = toggleDisplay model }, Cmd.none )
+
+        GetParameter parameterString ->
+            ( { model | parameter = String.toInt parameterString |> Result.withDefault 0 }, Cmd.none )
 
 
 toggleDisplay model =
@@ -95,11 +102,23 @@ toggleDisplay model =
 view model =
     div [ mainStyle ]
         [ div [ displayStyle ] [ showGraph model ]
-        , messageLine "140px" (displayResult model.data)
-        , messageLine "12px" model.message
         , basicButton GetData "Get data"
         , basicButton ToggleDisplay "Toggle display"
+        , span [ labelStyle ] [ text "Number of data points" ]
+        , parameterInput model
+        , messageLine "14   0px" (displayResult model.data)
+        , messageLine "12px" model.message
         ]
+
+
+parameterInput model =
+    input
+        [ type_ "text"
+        , inputStyle
+        , placeholder "???"
+        , onInput GetParameter
+        ]
+        [ text (toString model.parameter) ]
 
 
 basicButton action message =
@@ -133,11 +152,11 @@ messageLine height message =
 {- DATA -}
 
 
-getData : Cmd Msg
-getData =
+getData : Model -> Cmd Msg
+getData model =
     let
         url =
-            dataUrl 100
+            dataUrl model.parameter
 
         request =
             Http.get url dataDecoder

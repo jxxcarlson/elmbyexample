@@ -20,7 +20,7 @@ makeBarGraph plotWidth plotHeight data =
 
 
 barWidth plotWidth data =
-    Debug.log "::barWidth" ((0.9 * plotWidth) / (toFloat (List.length data)))
+    (0.9 * plotWidth) / (toFloat (List.length data))
 
 
 barGraph : Float -> Float -> String -> List Float -> List (Html.Html msg)
@@ -33,15 +33,10 @@ barGraph plotWidth plotHeight color scaledData =
             plotWidth / (toFloat n)
 
         timeLine =
-            Debug.log "barWidth_"
-                ((List.range 0 (n - 1)) |> List.map toFloat |> (Data.scale k))
+            (List.range 0 (n - 1)) |> List.map toFloat |> (Data.scale k)
 
         barWidth_ =
-            Debug.log "barWidth_"
-                (barWidth plotWidth scaledData)
-
-        _ =
-            Debug.log "plotHeight" plotHeight
+            barWidth plotWidth scaledData
     in
         List.map2 (verticalBar barWidth_ (plotHeight / 2) color) timeLine scaledData
 
