@@ -6,6 +6,9 @@ import Data
 import Html
 
 
+{-| Given plotWdith and plotHeight, draw piecewise llnear
+curve through the given data ponts that is strokeWidth thick.
+-}
 makeLineGraph : Float -> Float -> Float -> List Float -> Html.Html msg
 makeLineGraph plotWidth plotHeight strokeWidth data =
     let
@@ -48,13 +51,13 @@ makePoints width data =
         k =
             width / (toFloat n)
 
-        timeLine =
-            (List.range 0 (n - 1)) |> List.map toFloat |> (Data.scale k)
+        timeLine_ =
+            (Data.timeLine n) |> (Data.scale k)
 
         scaledData =
             data |> Data.scaleData |> rescale
     in
-        List.map2 Point timeLine scaledData
+        List.map2 Point timeLine_ scaledData
 
 
 makeLineSegments : Float -> List Float -> List LineSegment

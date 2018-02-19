@@ -3,7 +3,7 @@ module TimeSeries exposing (..)
 {- This app retrieves random numbers from www.random.org -}
 
 import Json.Decode as Decode exposing (Decoder, list, float)
-import Html exposing (div, span, text, button, input)
+import Html exposing (div, p, span, text, button, input)
 import Html.Attributes exposing (type_, placeholder)
 import Html.Events exposing (onClick, onInput)
 import Http
@@ -25,19 +25,27 @@ main =
 type alias Model =
     { data : List Float
     , displayType : DisplayType
-    , parameter : Int
+    , url : String
+    , command : String
+    , parameter : String
     , message : String
+    }
+
+
+initialModel =
+    { data = []
+    , displayType = Bar
+    , url = "http://localhost:8000"
+    , command = "/data="
+    , parameter = "100"
+    , message = "Starting up with data source localhost:8000 ..."
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { data = []
-      , displayType = Bar
-      , parameter = 100
-      , message = "Starting up ..."
-      }
-    , Cmd.none
+    ( initialModel
+    , getData initialModel
     )
 
 
@@ -55,6 +63,8 @@ type Msg
     | GetData
     | ToggleDisplay
     | GetParameter String
+    | GetUrl String
+    | GetCommand String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,7 +73,7 @@ update msg model =
         NewData (Ok data) ->
             ( { model
                 | data = data
-                , message = "Success"
+                , message = "Success for " ++ dataUrl model
               }
             , Cmd.none
             )
@@ -83,7 +93,13 @@ update msg model =
             ( { model | displayType = toggleDisplay model }, Cmd.none )
 
         GetParameter parameterString ->
-            ( { model | parameter = String.toInt parameterString |> Result.withDefault 0 }, Cmd.none )
+            ( { model | parameter = parameterString }, Cmd.none )
+
+        GetUrl urlString ->
+            ( { model | url = urlString }, Cmd.none )
+
+        GetCommand commandString ->
+            ( { model | command = commandString }, Cmd.none )
 
 
 toggleDisplay model =
@@ -104,21 +120,44 @@ view model =
         [ div [ displayStyle ] [ showGraph model ]
         , basicButton GetData "Get data"
         , basicButton ToggleDisplay "Toggle display"
-        , span [ labelStyle "50px" ] [ text "Number of data points" ]
-        , parameterInput "50px" model
+        , span [ labelStyle "50px" ] [ text "Command" ]
+        , commandInput "155px" model
+        , span [ labelStyle "50px" ] [ text "Parameter" ]
+        , parameterInput "90px" model
+        , p [] [ text "Data server url: ", urlInput "300px" model ]
         , messageLine "12px" model.message
         , messageLine "" (displayResult model.data)
         ]
+
+
+commandInput width model =
+    input
+        [ type_ "text"
+        , inputStyle width
+        , placeholder model.command
+        , onInput GetCommand
+        ]
+        []
 
 
 parameterInput width model =
     input
         [ type_ "text"
         , inputStyle width
-        , placeholder "???"
+        , placeholder model.parameter
         , onInput GetParameter
         ]
-        [ text (toString model.parameter) ]
+        []
+
+
+urlInput width model =
+    input
+        [ type_ "text"
+        , inputStyle width
+        , placeholder model.url
+        , onInput GetUrl
+        ]
+        []
 
 
 basicButton action message =
@@ -156,7 +195,7 @@ getData : Model -> Cmd Msg
 getData model =
     let
         url =
-            dataUrl model.parameter
+            (dataUrl model)
 
         request =
             Http.get url dataDecoder
@@ -164,9 +203,9 @@ getData model =
         Http.send NewData request
 
 
-dataUrl : Int -> String
-dataUrl dataSize =
-    "http://localhost:8000/data=" ++ (toString dataSize)
+dataUrl : Model -> String
+dataUrl model =
+    model.url ++ model.command ++ model.parameter
 
 
 dataDecoder : Decoder (List Float)
