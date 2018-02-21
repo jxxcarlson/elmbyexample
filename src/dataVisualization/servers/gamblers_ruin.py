@@ -58,7 +58,6 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        print self.path
         if self.path.find("/data=") == 0:
             [prefix,arg] = self.path.split("=")
             print "arg = " + arg

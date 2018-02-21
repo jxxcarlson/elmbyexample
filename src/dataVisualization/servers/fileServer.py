@@ -33,22 +33,33 @@ class S(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
-    def get_data(self, fname):
-        if os.path.exists(fname):
-           with open(fname, 'rb') as f:
+    def get_data(self, filePath):
+        if os.path.exists(filePath):
+           with open(filePath, 'rb') as f:
                try:
-                  file = open("data.txt", "r")
+                  file = open(filePath, "r")
                   return file.read()
                except : # whatever reader errors you care about
                   return "error: file not found"
 
+    def path_data(self, path):
+        path_elements = path.split("/")
+        print path_elements
+        if len(path_elements) != 3:
+            return (False, "")
+        if path_elements[1] != "data":
+            return (False, "")
+        return (True, "data/" + path_elements[2])
+
     def do_GET(self):
-        if self.path == "/data":
-            message = self.get_data("data.txt")
+        (pathIsVallid, filePath) = self.path_data(self.path)
+        if pathIsVallid:
+            message = self.get_data(filePath)
         else:
-            message = "I don't understand"
+            message = "Invalid request"
         self._set_headers()
         self.wfile.write(message)
 
