@@ -73,7 +73,7 @@ update msg model =
         NewData (Ok data) ->
             ( { model
                 | data = data
-                , message = "Success for " ++ dataUrl model
+                , message = "Success for " ++ dataUrl model ++ ", data points: " ++ (toString <| List.length data)
               }
             , Cmd.none
             )

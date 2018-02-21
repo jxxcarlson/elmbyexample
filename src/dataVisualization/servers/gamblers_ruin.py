@@ -39,12 +39,14 @@ import random
 # Generate a series of n numbers
 # by adding random -1, +1 to an
 # initial value
-def generate(n, initial_value):
+def generate(initial_value):
     x = initial_value
+    n = 0
     output = [x]
-    for i in range(0,n):
+    while x > 0 and n < 5000:
         x = x + 2*random.randint(0,1) - 1
         output.append(x)
+        n = n + 1
     return output
 
 
@@ -60,7 +62,7 @@ class S(BaseHTTPRequestHandler):
         if self.path.find("/data=") == 0:
             [prefix,arg] = self.path.split("=")
             print "arg = " + arg
-            message = generate(int(arg), 0)
+            message = generate(int(arg))
         else:
             message = "I don't understand"
         self._set_headers()
