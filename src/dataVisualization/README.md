@@ -20,9 +20,11 @@ Directions:
 
 2. Return to the root of this folder and run `elm make src/TimeSeries.elm`. Then open `index.html`
 
-3. Click on `Get Data`
+3. Fill out the command field with 'n = 3000'
 
-When you did this, the request "/data=100" was sent
+4. Click on `Get Data`
+
+When you did this, the request "/n=3000" was sent
 to the server at http://localhost:8000. The server generated a sequence
 of 100 integers by doing a random walk: start with zero, then
 repeatedly add random elements of {+1, -1}.

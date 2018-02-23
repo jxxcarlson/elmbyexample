@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 """
+SOURCE: Source: https://gist.github.com/bradmontgomery/2219997
+
 Very simple HTTP server in python.
 
 To run, use
@@ -16,6 +18,7 @@ To test:
   Send a POST request::
     curl -d "foo=bar&bin=baz" http://localhost:8000
 """
+
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 

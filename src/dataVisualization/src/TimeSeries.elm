@@ -27,7 +27,6 @@ type alias Model =
     , displayType : DisplayType
     , url : String
     , command : String
-    , parameter : String
     , message : String
     }
 
@@ -36,8 +35,7 @@ initialModel =
     { data = []
     , displayType = Bar
     , url = "http://localhost:8000"
-    , command = "/data="
-    , parameter = "100"
+    , command = "data=100"
     , message = "Starting up with data source localhost:8000 ..."
     }
 
@@ -45,7 +43,7 @@ initialModel =
 init : ( Model, Cmd Msg )
 init =
     ( initialModel
-    , getData initialModel
+    , Cmd.none
     )
 
 
@@ -62,7 +60,6 @@ type Msg
     = NewData (Result Http.Error (List Float))
     | GetData
     | ToggleDisplay
-    | GetParameter String
     | GetUrl String
     | GetCommand String
 
@@ -92,9 +89,6 @@ update msg model =
         ToggleDisplay ->
             ( { model | displayType = toggleDisplay model }, Cmd.none )
 
-        GetParameter parameterString ->
-            ( { model | parameter = parameterString }, Cmd.none )
-
         GetUrl urlString ->
             ( { model | url = urlString }, Cmd.none )
 
@@ -121,10 +115,8 @@ view model =
         , basicButton GetData "Get data"
         , basicButton ToggleDisplay "Toggle display"
         , span [ labelStyle "50px" ] [ text "Command" ]
-        , commandInput "155px" model
-        , span [ labelStyle "50px" ] [ text "Parameter" ]
-        , parameterInput "90px" model
-        , p [] [ text "Data server url: ", urlInput "300px" model ]
+        , commandInput "355px" model
+        , p [] [ text "Data server url: ", urlInput "520px" model ]
         , messageLine "12px" model.message
         , messageLine "" (displayResult model.data)
         ]
@@ -136,16 +128,6 @@ commandInput width model =
         , inputStyle width
         , placeholder model.command
         , onInput GetCommand
-        ]
-        []
-
-
-parameterInput width model =
-    input
-        [ type_ "text"
-        , inputStyle width
-        , placeholder model.parameter
-        , onInput GetParameter
         ]
         []
 
@@ -205,7 +187,7 @@ getData model =
 
 dataUrl : Model -> String
 dataUrl model =
-    model.url ++ model.command ++ model.parameter
+    model.url ++ "/" ++ model.command
 
 
 dataDecoder : Decoder (List Float)
