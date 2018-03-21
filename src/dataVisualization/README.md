@@ -14,17 +14,15 @@ a web server.
 
 Directions:
 
-1. Do `cd servers; chmod u+x dataServer.py` to make the data server
-   executable.  Then run `./dataServer.py 8000`.  The data server
-   is now running.
+1. To run the data server, do `python servers/dataServer.py 8000`.  
 
 2. Return to the root of this folder and run `elm make src/TimeSeries.elm`. Then open `index.html`
 
-3. Fill out the command field with 'n = 3000'
+3. Fill out the command field with 'n=3000'
 
 4. Click on `Get Data`
 
-When you did this, the request "/n=3000" was sent
+When you did this, the request "/n=3000   " was sent
 to the server at http://localhost:8000. The server generated a sequence
 of 100 integers by doing a random walk: start with zero, then
 repeatedly add random elements of {+1, -1}.
