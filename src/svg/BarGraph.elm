@@ -9,7 +9,7 @@ import Svg.Attributes as SA
 main : Html msg
 main =
     div
-        [ mainStyle ]
+        mainStyle
         (barGraph 10 100 "red" [ 1.0, 0.5, 0.1, -0.1, -0.5, -1.0 ])
 
 
@@ -29,9 +29,9 @@ vRect barWidth barHeight color fraction =
 vRectPlus : Float -> Float -> String -> Float -> Svg.Svg msg
 vRectPlus barWidth barHeight color fraction =
     rect
-        [ SA.y <| toString <| (1 - fraction) * barHeight
-        , SA.height <| toString <| fraction * barHeight
-        , SA.width <| toString barWidth
+        [ SA.y <| String.fromFloat <| (1 - fraction) * barHeight
+        , SA.height <| String.fromFloat <| fraction * barHeight
+        , SA.width <| String.fromFloat barWidth
         , SA.fill color
         ]
         []
@@ -40,9 +40,9 @@ vRectPlus barWidth barHeight color fraction =
 vRectMinus : Float -> Float -> String -> Float -> Svg.Svg msg
 vRectMinus barWidth barHeight color fraction =
     rect
-        [ SA.y <| toString <| barHeight
-        , SA.height <| toString <| -1 * fraction * barHeight
-        , SA.width <| toString barWidth
+        [ SA.y <| String.fromFloat <| barHeight
+        , SA.height <| String.fromFloat <| -1 * fraction * barHeight
+        , SA.width <| String.fromFloat barWidth
         , SA.fill color
         ]
         []
@@ -51,15 +51,14 @@ vRectMinus barWidth barHeight color fraction =
 verticalBar : Float -> Float -> String -> Float -> Html.Html msg
 verticalBar barWidth barHeight color fraction =
     svg
-        [ SA.width <| toString (1.3 * barWidth), SA.height <| toString <| 2 * barHeight ]
+        [ SA.width <| String.fromFloat (1.3 * barWidth), SA.height <| String.fromFloat <| 2 * barHeight ]
         [ vRect barWidth barHeight color fraction ]
 
 
 mainStyle =
-    style
-        [ ( "width", "110px" )
-        , ( "height", "190px" )
-        , ( "padding", "20px" )
-        , ( "background-color", "rgb(100,100,100)" )
-        , ( "color", "white" )
-        ]
+    [ style "width" "110px"
+    , style "height" "190px"
+    , style "padding" "20px"
+    , style "background-color" "rgb(100,100,100)"
+    , style "color" "white"
+    ]
