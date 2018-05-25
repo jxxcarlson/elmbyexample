@@ -2,13 +2,14 @@ port module WeatherApp exposing (main)
 
 {- This app retrieves and displays weather data from openweathermap.org. -}
 
+import Browser
 import Html
 import Types exposing (Model, Msg(..))
 import View exposing (view)
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -16,8 +17,12 @@ main =
         }
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( { message = "App started"
       }
     , Cmd.none

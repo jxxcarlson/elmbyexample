@@ -12,8 +12,8 @@ import Types exposing (Model, Msg(..))
 
 view : Model -> Html Msg
 view model =
-    div [ mainStyle ]
-        [ div [ innerStyle ]
+    div mainStyle
+        [ div innerStyle
             [ label "Skeleton App"
             , messageDisplay model
             , sampleInput model
@@ -34,12 +34,12 @@ showIf condition element =
 
 
 label str =
-    div [ style [ ( "margin-bottom", "10px" ), ( "font-weight", "bold" ) ] ]
+    div [ style "margin-bottom" "10px", style "font-weight" "bold" ]
         [ (text str) ]
 
 
 messageDisplay model =
-    div [ style [ ( "margin-bottom", "10px" ) ] ]
+    div [ style "margin-bottom" "10px" ]
         [ (text model.message) ]
 
 
@@ -48,7 +48,7 @@ messageDisplay model =
 
 
 sampleInput model =
-    div [ style [ ( "margin-bottom", "10px" ) ] ]
+    div [ style "margin-bottom" "10px" ]
         [ input [ type_ "text", placeholder "Enter text here", onInput Input ] [] ]
 
 
@@ -57,7 +57,7 @@ sampleInput model =
 
 
 sampleButton model =
-    div [ style [ ( "margin-bottom", "0px" ) ] ]
+    div [ style "margin-bottom" "0px" ]
         [ button [ onClick ReverseText ] [ text "Reverse" ] ]
 
 
@@ -66,13 +66,12 @@ sampleButton model =
 
 
 mainStyle =
-    style
-        [ ( "margin", "15px" )
-        , ( "margin-top", "20px" )
-        , ( "background-color", "#eee" )
-        , ( "width", "240px" )
-        ]
+    [ style "margin" "15px"
+    , style "margin-top" "20px"
+    , style "background-color" "#eee"
+    , style "width" "240px"
+    ]
 
 
 innerStyle =
-    style [ ( "padding", "15px" ) ]
+    [ style "padding" "15px" ]
