@@ -9,55 +9,57 @@ import VigenereTypes exposing (Msg(..))
 
 heading =
     h1
-        [ headingStyle ]
+        headingStyle
         [ text "Vigenère cipher" ]
 
 
 textInput model =
     div []
         [ input
-            [ type_ "text"
-            , inputStyle
-            , placeholder "Input text"
-            , onInput InputText
-            ]
+            ([ type_ "text"
+             , placeholder "Input text"
+             , onInput InputText
+             ]
+                ++ inputStyle
+            )
             []
-        , span [ numberDisplayStyle ] [ text (toString (String.length model.inputText)) ]
+        , span numberDisplayStyle [ text (String.fromInt (String.length model.inputText)) ]
         ]
 
 
 keyInput model =
     div []
         [ input
-            [ keyInputStyle
-            , type_ "text"
-            , placeholder "key"
-            , onInput Key
-            ]
+            ([ type_ "text"
+             , placeholder "key"
+             , onInput Key
+             ]
+                ++ keyInputStyle
+            )
             []
-        , span [ numberDisplayStyle ] [ text (toString (String.length model.key)) ]
+        , span numberDisplayStyle [ text (String.fromInt (String.length model.key)) ]
         ]
 
 
 cipherTextDisplay model =
-    div [ style [ ( "margin-top", "15px" ) ] ]
+    div [ style "margin-top" "15px" ]
         [ span
-            [ cipherTextStyle ]
+            cipherTextStyle
             [ text model.cipherText ]
-        , span [ numberDisplayStyle ] [ text (toString (String.length model.cipherText)) ]
+        , span numberDisplayStyle [ text (String.fromInt (String.length model.cipherText)) ]
         ]
 
 
 decipheredTextDisplay model =
-    div [ style [ ( "margin-top", "15px" ) ] ]
+    div [ style "margin-top" "15px" ]
         [ span
-            [ cipherTextStyle ]
+            cipherTextStyle
             [ text model.decipheredText ]
-        , span [ numberDisplayStyle ] [ text (toString (String.length model.decipheredText)) ]
+        , span numberDisplayStyle [ text (String.fromInt (String.length model.decipheredText)) ]
         ]
 
 
 legend =
     p
-        [ legendStyle ]
+        legendStyle
         [ text "Enter text in 'Input text' and a string in 'key'. Use ALL CAPS, no spaces, numbers, or punctuation marks." ]

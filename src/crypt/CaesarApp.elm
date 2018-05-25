@@ -2,6 +2,7 @@ module CaesarApp exposing (..)
 
 {- A very basic app that demonstrates the Caesar Cipher. -}
 
+import Browser
 import CaesarCipher exposing (encryptWithCaesar)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -9,7 +10,7 @@ import Html.Events exposing (onInput)
 
 
 main =
-    Html.beginnerProgram { model = model, view = view, update = update }
+    Browser.sandbox { init = init, view = view, update = update }
 
 
 
@@ -23,8 +24,8 @@ type alias Model =
     }
 
 
-model : Model
-model =
+init : Model
+init =
     { plainText = "", cipherText = "", key = 0 }
 
 
@@ -54,7 +55,7 @@ update msg model =
         Key keyString ->
             let
                 key =
-                    String.toInt keyString |> Result.withDefault 0
+                    String.toInt keyString |> Maybe.withDefault 0
 
                 cipherText =
                     encryptWithCaesar key model.plainText
@@ -69,7 +70,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div
-        [ mainStyle ]
+        mainStyle
         [ heading
         , textInput
         , keyInput
@@ -80,39 +81,41 @@ view model =
 
 heading =
     h1
-        [ headingStyle ]
+        headingStyle
         [ text "Caesar cipher" ]
 
 
 textInput =
     input
-        [ type_ "text"
-        , plainTextInputStyle
-        , placeholder "Plain text"
-        , onInput PlainText
-        ]
+        ([ type_ "text"
+         , placeholder "Plain text"
+         , onInput PlainText
+         ]
+            ++ plainTextInputStyle
+        )
         []
 
 
 cipherTextDisplay model =
     div
-        [ encryptedTextStyle ]
+        encryptedTextStyle
         [ text model.cipherText ]
 
 
 keyInput =
     input
-        [ keyInputStyle
-        , type_ "text"
-        , placeholder "key"
-        , onInput Key
-        ]
+        ([ type_ "text"
+         , placeholder "key"
+         , onInput Key
+         ]
+            ++ keyInputStyle
+        )
         []
 
 
 message =
     div
-        [ labeStyle ]
+        labeStyle
         [ text "Enter a word in 'Plain text' and an integer in 'key'" ]
 
 
@@ -121,48 +124,44 @@ message =
 
 
 mainStyle =
-    style
-        [ ( "width", "300px" )
-        , ( "height", "300px" )
-        , ( "padding", "15px" )
-        , ( "margin", "40px" )
-        , ( "background-color", "rgb(140,140,140" )
-        ]
+    [ style "width" "300px"
+    , style "height" "300px"
+    , style "padding" "15px"
+    , style "margin" "40px"
+    , style "background-color" "rgb(140,140,140"
+    ]
 
 
 headingStyle =
-    style
-        [ ( "color", "white" )
-        , ( "padding-bottom", "20px" )
-        ]
+    [ style "color" "white"
+    , style "padding-bottom" "20px"
+    ]
 
 
 plainTextInputStyle =
-    style [ ( "width", "150x" ), ( "font-size", "14pt" ) ]
+    [ style "width" "150x", style "font-size" "14pt" ]
 
 
 keyInputStyle =
-    style [ ( "width", "65px" ), ( "margin-top", "15px" ), ( "font-size", "14pt" ) ]
+    [ style "width" "65px", style "margin-top" "15px", style "font-size" "14pt" ]
 
 
 encryptedTextStyle =
-    style
-        [ ( "width", "210px" )
-        , ( "height", "32px" )
-        , ( "font-size", "18pt" )
-        , ( "padding", "4px" )
-        , ( "margin-top", "15px" )
-        , ( "background-color", "rgb(160, 110, 110)" )
-        , ( "color", "white" )
-        ]
+    [ style "width" "210px"
+    , style "height" "32px"
+    , style "font-size" "18pt"
+    , style "padding" "4px"
+    , style "margin-top" "15px"
+    , style "background-color" "rgb(160, 110, 110)"
+    , style "color" "white"
+    ]
 
 
 labeStyle =
-    style
-        [ ( "width", "210px" )
-        , ( "height", "32px" )
-        , ( "font-size", "12pt" )
-        , ( "padding", "4px" )
-        , ( "padding-top", "40px" )
-        , ( "color", "white" )
-        ]
+    [ style "width" "210px"
+    , style "height" "32px"
+    , style "font-size" "12pt"
+    , style "padding" "4px"
+    , style "padding-top" "40px"
+    , style "color" "white"
+    ]

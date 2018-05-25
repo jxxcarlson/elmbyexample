@@ -22,12 +22,12 @@ intListToString intList =
 
 add : Int -> Int -> Int
 add x y =
-    (x + y) % 26
+    remainderBy 26 (x + y)
 
 
 sub : Int -> Int -> Int
 sub x y =
-    (x - y) % 26
+    remainderBy 26 (x - y)
 
 
 extend : String -> String -> String

@@ -29,7 +29,7 @@ intListToString intList =
 
 shift : Int -> Int -> Int
 shift k n =
-    (k + n) % 26
+    remainderBy 26 (k + n)
 
 
 encryptWithCaesar : Int -> String -> String
