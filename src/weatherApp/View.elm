@@ -12,8 +12,8 @@ import Types exposing (Model, Msg(..), TemperatureScale(..), Weather, Status(..)
 
 view : Model -> Html Msg
 view model =
-    div [ mainStyle ]
-        [ div [ innerStyle ]
+    div mainStyle
+        [ div innerStyle
             [ weatherTable model.weather model.temperatureScale
             , setLocationInput model
             , getWeatherButton model
@@ -37,16 +37,15 @@ showIf condition element =
 
 
 mainStyle =
-    style
-        [ ( "margin", "15px" )
-        , ( "margin-top", "20px" )
-        , ( "background-color", "#eee" )
-        , ( "width", "240px" )
-        ]
+    [ style "margin" "15px"
+    , style "margin-top" "20px"
+    , style "background-color" "#eee"
+    , style "width" "240px"
+    ]
 
 
 innerStyle =
-    style [ ( "padding", "15px" ) ]
+    [ style "padding" "15px" ]
 
 
 
@@ -54,12 +53,12 @@ innerStyle =
 
 
 setLocationInput model =
-    div [ style [ ( "margin-bottom", "10px" ) ] ]
+    div [ style "margin-bottom" "10px" ]
         [ input [ type_ "text", placeholder "Location", onInput SetLocation ] [] ]
 
 
 setApiKeyInput model =
-    div [ style [ ( "margin-top", "20px" ) ] ]
+    div [ style "margin-top" "20px" ]
         [ input [ type_ "password", placeholder "Api key", onInput SetApiKey ] [] ]
 
 
@@ -68,7 +67,7 @@ setApiKeyInput model =
 
 
 getWeatherButton model =
-    div [ style [ ( "margin-bottom", "0px" ) ] ]
+    div [ style "margin-bottom" "0px" ]
         [ button [ onClick GetWeather ] [ text "Get weather" ] ]
 
 
@@ -79,30 +78,30 @@ setTemperatureControl model =
         ]
 
 
-centigradeStyle model =
+centigradeStyle model attr =
     case model.temperatureScale of
         Centigrade ->
-            style [ ( "background-color", "black" ), ( "color", "white" ) ]
+            [ style "background-color" "black", style "color" "white" ] ++ attr
 
         Fahrenheit ->
-            style [ ( "background-color", "#888" ), ( "color", "white" ) ]
+            [ style "background-color" "#888", style "color" "white" ] ++ attr
 
 
-fahrenheitStyle model =
+fahrenheitStyle model attr =
     case model.temperatureScale of
         Centigrade ->
-            style [ ( "background-color", "#888" ), ( "color", "white" ) ]
+            [ style "background-color" "#888", style "color" "white" ] ++ attr
 
         Fahrenheit ->
-            style [ ( "background-color", "black" ), ( "color", "white" ) ]
+            [ style "background-color" "black", style "color" "white" ] ++ attr
 
 
 setToCentigrade model =
-    button [ onClick SetToCentigrade, centigradeStyle model ] [ text "C" ]
+    button (centigradeStyle model [ onClick SetToCentigrade ]) [ text "C" ]
 
 
 setToFahrenheit model =
-    button [ onClick SetToFahrenheit, fahrenheitStyle model ] [ text "F" ]
+    button (fahrenheitStyle model [ onClick SetToFahrenheit ]) [ text "F" ]
 
 
 
@@ -111,7 +110,7 @@ setToFahrenheit model =
 
 getApiKeyLink =
     div
-        [ style [ ( "margin-top", "8px" ) ] ]
+        [ style "margin-top" "8px" ]
         [ a
             [ href "https://openweathermap.org/price", target "_blank" ]
             [ text "get Api key" ]
@@ -119,7 +118,7 @@ getApiKeyLink =
 
 
 messageLine model =
-    div [ style [ ( "margin-bottom", "10px" ), ( "margin-top", "10px" ) ] ] [ text model.message ]
+    div [ style "margin-bottom" "10px", style "margin-top" "10px" ] [ text model.message ]
 
 
 
@@ -141,13 +140,13 @@ weatherTable maybeWeather temperatureScale =
 
 noWeatherTable : Html msg
 noWeatherTable =
-    div [ style [ ( "margin-bottom", "20px" ) ] ]
+    div [ style "margin-bottom" "20px" ]
         [ text "No weather data" ]
 
 
 realWeatherTable : Weather -> TemperatureScale -> Html msg
 realWeatherTable weather temperatureScale =
-    table [ style [ ( "margin-bottom", "20px" ) ] ]
+    table [ style "margin-bottom" "20px" ]
         [ locationRow weather
         , temperatureRow weather temperatureScale
         , humidityRow weather
@@ -164,7 +163,7 @@ locationRow : Weather -> Html msg
 locationRow weather =
     tr []
         [ td [] [ text "Location" ]
-        , td [ style [ ( "padding-left", "20px" ) ] ]
+        , td [ style "padding-left" "20px" ]
             [ text <| weather.name ]
         ]
 
@@ -173,7 +172,7 @@ temperatureRow : Weather -> TemperatureScale -> Html msg
 temperatureRow weather temperatureScale =
     tr []
         [ td [] [ text "Temp" ]
-        , td [ style [ ( "padding-left", "20px" ) ] ]
+        , td [ style "padding-left" "20px" ]
             [ text <| temperatureString weather temperatureScale ]
         ]
 
@@ -181,18 +180,18 @@ temperatureRow weather temperatureScale =
 temperatureString weather temperatureScale =
     case temperatureScale of
         Centigrade ->
-            addSuffix "C" <| toString <| toCentigrade <| weather.main.temp
+            addSuffix "C" <| String.fromFloat <| toCentigrade <| weather.main.temp
 
         Fahrenheit ->
-            addSuffix "F" <| toString <| toFahrenheit <| weather.main.temp
+            addSuffix "F" <| String.fromFloat <| toFahrenheit <| weather.main.temp
 
 
 humidityRow : Weather -> Html msg
 humidityRow weather =
     tr []
         [ td [] [ text "Humidity" ]
-        , td [ style [ ( "padding-left", "20px" ) ] ]
-            [ text <| addSuffix "%" <| toString <| weather.main.humidity ]
+        , td [ style "padding-left" "20px" ]
+            [ text <| addSuffix "%" <| String.fromFloat <| weather.main.humidity ]
         ]
 
 
@@ -200,8 +199,8 @@ pressureRow : Weather -> Html msg
 pressureRow weather =
     tr []
         [ td [] [ text "Pressure" ]
-        , td [ style [ ( "padding-left", "20px" ) ] ]
-            [ text <| addSuffix "mb" <| toString <| weather.main.pressure ]
+        , td [ style "padding-left" "20px" ]
+            [ text <| addSuffix "mb" <| String.fromFloat <| weather.main.pressure ]
         ]
 
 
@@ -211,8 +210,8 @@ indoorRHRow : Weather -> Html msg
 indoorRHRow weather =
     tr []
         [ td [] [ text "Indoor RH" ]
-        , td [ style [ ( "padding-left", "20px" ) ] ]
-            [ text <| addSuffix "%" <| toString <| toFloat <| round <| (rhIndoor 22.2 weather) * 100 ]
+        , td [ style "padding-left" "20px" ]
+            [ text <| addSuffix "%" <| String.fromFloat <| toFloat <| round <| (rhIndoor 22.2 weather) * 100 ]
         ]
 
 
