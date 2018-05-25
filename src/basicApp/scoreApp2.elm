@@ -1,12 +1,13 @@
 module ScoreApp2 exposing (..)
 
+import Browser
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 
 
 main =
-    Html.beginnerProgram { model = model, view = view, update = update }
+    Browser.sandbox { init = init, view = view, update = update }
 
 
 
@@ -17,8 +18,8 @@ type alias Model =
     { counter : Int }
 
 
-model : Model
-model =
+init : Model
+init =
     { counter = 0 }
 
 
@@ -43,9 +44,9 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [ mainStyle ]
-        [ div [ displayStyle ] [ text (toString model.counter) ]
-        , button [ onClick Increment, buttonStyle ] [ text "+" ]
+    div mainStyle
+        [ div displayStyle [ text (String.fromInt model.counter) ]
+        , button ([ onClick Increment ] ++ buttonStyle) [ text "+" ]
         ]
 
 
@@ -53,32 +54,32 @@ view model =
 --- STYLE
 
 
-buttonStyle : Html.Attribute msg
+buttonStyle : List (Html.Attribute msg)
 buttonStyle =
-    style
-        [ ( "backgroundColor", "rgb(100,100,100)" )
-        , ( "color", "white" )
-        , ( "width", "50px" )
-        , ( "height", "50px" )
-        , ( "font-size", "28pt" )
-        , ( "text-align", "center" )
-        , ( "border", "none" )
-        ]
+    [ style "backgroundColor" "rgb(100,100,100)"
+    , style "color" "white"
+    , style "width" "50px"
+    , style "height" "50px"
+    , style "padding-bottom" "8px"
+    , style "font-size" "28pt"
+    , style "text-align" "center"
+    , style "border" "none"
+    ]
 
 
-displayStyle : Html.Attribute msg
+displayStyle : List (Html.Attribute msg)
 displayStyle =
-    style
-        [ ( "backgroundColor", "rgb(50,50,50)" )
-        , ( "color", "red" )
-        , ( "width", "50px" )
-        , ( "height", "50px" )
-        , ( "text-align", "center" )
-        , ( "font-size", "32pt" )
-        , ( "border", "none" )
-        ]
+    [ style "backgroundColor" "rgb(50,50,50)"
+    , style "color" "red"
+    , style "width" "50px"
+    , style "height" "42px"
+    , style "padding-top" "8px"
+    , style "text-align" "center"
+    , style "font-size" "32pt"
+    , style "border" "none"
+    ]
 
 
-mainStyle : Html.Attribute msg
+mainStyle : List (Html.Attribute msg)
 mainStyle =
-    style [ ( "margin", "30px" ) ]
+    [ style "margin" "30px" ]
