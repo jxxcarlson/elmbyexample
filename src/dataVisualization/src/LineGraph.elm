@@ -18,7 +18,7 @@ makeLineGraph plotWidth plotHeight strokeWidth data =
                 |> (\x -> x ++ [ abscissa plotWidth plotHeight strokeWidth ])
     in
         svg
-            [ SA.width <| toString (plotWidth), SA.height <| toString <| plotHeight ]
+            [ SA.width <| String.fromFloat (plotWidth), SA.height <| String.fromFloat <| plotHeight ]
             segments
 
 
@@ -99,11 +99,11 @@ lineAttributes : Float -> LineSegment -> List (Svg.Attribute msg)
 lineAttributes strokeWidth lineSegment =
     [ SA.fill (rgba (ColorRecord 0 0 0 1.0))
     , SA.stroke (rgba (ColorRecord 0 0 0 1.0))
-    , SA.x1 (toString lineSegment.a.x)
-    , SA.y1 (toString lineSegment.a.y)
-    , SA.x2 (toString lineSegment.b.x)
-    , SA.y2 (toString lineSegment.b.y)
-    , SA.strokeWidth (toString strokeWidth)
+    , SA.x1 (String.fromFloat lineSegment.a.x)
+    , SA.y1 (String.fromFloat lineSegment.a.y)
+    , SA.x2 (String.fromFloat lineSegment.b.x)
+    , SA.y2 (String.fromFloat lineSegment.b.y)
+    , SA.strokeWidth (String.fromFloat strokeWidth)
     ]
 
 
@@ -113,4 +113,4 @@ type alias ColorRecord =
 
 rgba : ColorRecord -> String
 rgba color =
-    "rgba(" ++ toString color.r ++ "," ++ toString color.g ++ "," ++ toString color.b ++ "," ++ toString color.a ++ ")"
+    "rgba(" ++ String.fromInt color.r ++ "," ++ String.fromInt color.g ++ "," ++ String.fromInt color.b ++ "," ++ String.fromFloat color.a ++ ")"

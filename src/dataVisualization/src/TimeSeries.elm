@@ -2,19 +2,20 @@ module TimeSeries exposing (..)
 
 {- This app retrieves random numbers from www.random.org -}
 
+import Browser
 import Json.Decode as Decode exposing (Decoder, list, float)
 import Html exposing (div, p, span, text, button, input)
 import Html.Attributes exposing (type_, placeholder)
 import Html.Events exposing (onClick, onInput)
 import Http
-import StyleForTimeSeries exposing (..)
+import Style exposing (..)
 import LineGraph exposing (makeLineGraph)
 import BarGraph exposing (makeBarGraph)
 import Data
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -35,13 +36,17 @@ initialModel =
     { data = []
     , displayType = Bar
     , url = "http://localhost:8000"
-    , command = "data=100"
+    , command = "n=400"
     , message = "Starting up with data source localhost:8000 ..."
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( initialModel
     , Cmd.none
     )
@@ -70,7 +75,7 @@ update msg model =
         NewData (Ok data) ->
             ( { model
                 | data = data
-                , message = "Success for " ++ dataUrl model ++ ", data points: " ++ (toString <| List.length data)
+                , message = "Success for " ++ dataUrl model ++ ", data points: " ++ (String.fromInt <| List.length data)
               }
             , Cmd.none
             )
@@ -78,7 +83,7 @@ update msg model =
         NewData (Err error) ->
             ( { model
                 | data = []
-                , message = (toString error)
+                , message = "Http error!"
               }
             , Cmd.none
             )
@@ -110,11 +115,11 @@ toggleDisplay model =
 
 
 view model =
-    div [ mainStyle ]
-        [ div [ displayStyle ] [ showGraph model ]
+    div mainStyle
+        [ div displayStyle [ showGraph model ]
         , basicButton GetData "Get data"
         , basicButton ToggleDisplay "Toggle display"
-        , span [ labelStyle "50px" ] [ text "Command" ]
+        , span (labelStyle "50px") [ text "Command" ]
         , commandInput "355px" model
         , p [] [ text "Data server url: ", urlInput "520px" model ]
         , messageLine "12px" model.message
@@ -124,27 +129,29 @@ view model =
 
 commandInput width model =
     input
-        [ type_ "text"
-        , inputStyle width
-        , placeholder model.command
-        , onInput GetCommand
-        ]
+        ([ type_ "text"
+         , placeholder model.command
+         , onInput GetCommand
+         ]
+            ++ inputStyle width
+        )
         []
 
 
 urlInput width model =
     input
-        [ type_ "text"
-        , inputStyle width
-        , placeholder model.url
-        , onInput GetUrl
-        ]
+        ([ type_ "text"
+         , placeholder model.url
+         , onInput GetUrl
+         ]
+            ++ inputStyle width
+        )
         []
 
 
 basicButton action message =
     button
-        [ onClick action, buttonStyle ]
+        ([ onClick action ] ++ buttonStyle)
         [ text message ]
 
 
@@ -160,13 +167,14 @@ showGraph model =
 displayResult : List Float -> String
 displayResult data =
     data
+        |> List.take 20
         |> List.map (Data.roundTo 3)
-        |> List.map toString
+        |> List.map String.fromFloat
         |> String.join ", "
 
 
 messageLine height message =
-    div [ legendStyle height ] [ text message ]
+    div (legendStyle height) [ text message ]
 
 
 

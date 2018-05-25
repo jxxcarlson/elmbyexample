@@ -15,7 +15,7 @@ makeBarGraph plotWidth plotHeight data =
                 |> (\x -> x ++ [ LineGraph.abscissa plotWidth plotHeight 1.0 ])
     in
         svg
-            [ SA.width <| toString (plotWidth), SA.height <| toString <| plotHeight ]
+            [ SA.width <| String.fromFloat (plotWidth), SA.height <| String.fromFloat <| plotHeight ]
             svgData
 
 
@@ -42,40 +42,39 @@ barGraph plotWidth plotHeight color scaledData =
 
 
 vRect : Float -> Float -> String -> Float -> Float -> Svg.Svg msg
-vRect barWidth barHeight color x y =
+vRect barWidth_ barHeight_ color x y =
     if y > 0 then
-        vRectPlus barWidth barHeight color x y
+        vRectPlus barWidth_ barHeight_ color x y
     else
-        vRectMinus barWidth barHeight color x y
+        vRectMinus barWidth_ barHeight_ color x y
 
 
 vRectPlus : Float -> Float -> String -> Float -> Float -> Svg.Svg msg
-vRectPlus barWidth barHeight color x y =
+vRectPlus barWidth_ barHeight_ color x y =
     rect
-        [ SA.y <| toString <| (1 - y) * barHeight
-        , SA.x <| toString x
-        , SA.height <| toString <| barHeight * y
-        , SA.width <| toString barWidth
+        [ SA.y <| String.fromFloat <| (1 - y) * barHeight_
+        , SA.x <| String.fromFloat x
+        , SA.height <| String.fromFloat <| barHeight_ * y
+        , SA.width <| String.fromFloat barWidth_
         , SA.fill color
         ]
         []
 
 
 vRectMinus : Float -> Float -> String -> Float -> Float -> Svg.Svg msg
-vRectMinus barWidth barHeight color x y =
+vRectMinus barWidth_ barHeight_ color x y =
     rect
-        [ SA.x <| toString x
-        , SA.y <| toString <| barHeight
-        , SA.height <| toString <| -1 * barHeight * y
-        , SA.width <| toString barWidth
+        [ SA.x <| String.fromFloat x
+        , SA.y <| String.fromFloat <| barHeight_
+        , SA.height <| String.fromFloat <| -1 * barHeight_ * y
+        , SA.width <| String.fromFloat barWidth_
         , SA.fill color
         ]
         []
 
 
 verticalBar : Float -> Float -> String -> Float -> Float -> Html.Html msg
-verticalBar barWidth barHeight color x y =
+verticalBar barWidth_ barHeight_ color x y =
     svg
-        -- [ SA.width <| toString (1.3 * barWidth), SA.height <| toString <| 2 * barHeight ]
         []
-        [ vRect barWidth barHeight color x y ]
+        [ vRect barWidth_ barHeight_ color x y ]
