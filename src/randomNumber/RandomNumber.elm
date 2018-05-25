@@ -2,15 +2,16 @@ module RandomNumberApp exposing (main)
 
 {- This app retrieves random numbers from www.random.org -}
 
+import Browser
 import Json.Decode as Decode exposing (Decoder, int)
 import Html exposing (div, text, button)
 import Html.Events exposing (onClick)
 import Http
-import StyleForRandomNumbers exposing(..)
+import Style exposing (..)
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -22,8 +23,12 @@ type alias Model =
     { maybeRandomNumber : Maybe Int, message : String }
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( { maybeRandomNumber = Nothing
       , message = "Starting up ..."
       }
@@ -68,11 +73,11 @@ update msg model =
 
 
 view model =
-    div [ mainStyle ]
+    div mainStyle
         [ messageLine (displayResult model.maybeRandomNumber)
         , messageLine model.message
         , button
-            [ onClick GetNumber, buttonStyle ]
+            ([ onClick GetNumber ] ++ buttonStyle)
             [ text "Get number" ]
         ]
 
@@ -81,14 +86,14 @@ displayResult : Maybe Int -> String
 displayResult maybeNumber =
     case maybeNumber of
         Just n ->
-            (toString n)
+            (String.fromInt n)
 
         Nothing ->
             "****"
 
 
 messageLine message =
-    div [ messageStyle ] [ text message ]
+    div messageStyle [ text message ]
 
 
 
@@ -121,11 +126,9 @@ randomNumberUrl maxDigits =
         suffix =
             "&col=1&base=10&format=plain&rnd=new"
     in
-        prefix ++ (toString maxNumber) ++ suffix
+        prefix ++ (String.fromInt maxNumber) ++ suffix
 
 
 randomNumberDecoder : Decoder Int
 randomNumberDecoder =
     int
-
-
