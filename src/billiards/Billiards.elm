@@ -2,10 +2,11 @@ module Main exposing (..)
 
 -- On commandshttps://www.elm-tutorial.org/en/03-subs-cmds/02-commands.html
 
+import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Time exposing (Time, second)
+import Time exposing (Posix)
 import Svg as S exposing (svg, circle)
 import Svg.Attributes as SA exposing (cx, cy, fill, width, height, r)
 import Random
@@ -16,7 +17,7 @@ import Physics exposing (..)
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -118,7 +119,7 @@ start simulatorState =
             round (Physics.distance particle1 particle2)
 
         message =
-            "n: 0, distance: " ++ (toString distance)
+            "n: 0, distance: " ++ (String.fromInt distance)
     in
         ( Model simulatorState
             0
@@ -132,7 +133,12 @@ start simulatorState =
         )
 
 
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     start Paused
 
 
@@ -144,7 +150,7 @@ type Msg
     = Reset
     | Pause
     | Run
-    | Tick Time
+    | Tick Posix
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -214,7 +220,7 @@ update_model model =
             { oldGraphMap | targetRect = newTargetRect }
 
         new_message =
-            "n: " ++ (toString new_count) ++ ", distance: " ++ (toString distance)
+            "n: " ++ (String.fromInt new_count) ++ ", distance: " ++ (String.fromInt distance)
     in
         ( { model
             | particles = new_particles
@@ -286,7 +292,7 @@ updateParticles model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every (20 * Time.millisecond) Tick
+    Time.every (20) Tick
 
 
 renderParticle : Model -> Particle -> S.Svg msg
@@ -310,13 +316,11 @@ view : Model -> Html Msg
 view model =
     div
         [ id "graphics_area"
-        , style
-            [ ( "margin-left", "35px" )
-            , ( "margin-top", "25px" )
-            , ( "padding", "25px 35px 35px 55px" )
-            , ( "width", "480px" )
-            , ( "background-color", "#eee" )
-            ]
+        , style "margin-left" "35px"
+        , style "margin-top" "25px"
+        , style "padding" "25px 35px 35px 55px"
+        , style "width" "480px"
+        , style "background-color" "#eee"
         ]
         [ h1 [] [ text "Billiard simulator" ]
         , svg
@@ -329,30 +333,28 @@ view model =
                 ++ (renderParticles model)
             )
         , br [] []
-        , button [ onClick Run, id "run", buttonStyle ] [ text "Run" ]
-        , button [ onClick Pause, id "pause", buttonStyle ] [ text "Pause" ]
-        , button [ onClick Reset, id "reset", buttonStyle ] [ text "Reset" ]
-        , span [ id "message", labelStyle ] [ text model.message ]
+        , button ([ onClick Run, id "run" ] ++ buttonStyle) [ text "Run" ]
+        , button ([ onClick Pause, id "pause" ] ++ buttonStyle) [ text "Pause" ]
+        , button ([ onClick Reset, id "reset" ] ++ buttonStyle) [ text "Reset" ]
+        , span ([ id "message" ] ++ labelStyle) [ text model.message ]
         , br [] []
         , br [] []
         ]
 
 
 buttonStyle =
-    style
-        [ ( "height", "25px" )
-        , ( "background-color", "black" )
-        , ( "color", "white" )
-        , ( "margin-right", "10px" )
-        , ( "font-size", "12pt" )
-        ]
+    [ style "height" "25px"
+    , style "background-color" "black"
+    , style "color" "white"
+    , style "margin-right" "10px"
+    , style "font-size" "12pt"
+    ]
 
 
 labelStyle =
-    style
-        [ ( "height", "35px" )
-        , ( "background-color", "black" )
-        , ( "color", "white" )
-        , ( "margin-right", "15px" )
-        , ( "padding", "3px 8px 3px 8px" )
-        ]
+    [ style "height" "35px"
+    , style "background-color" "black"
+    , style "color" "white"
+    , style "margin-right" "15px"
+    , style "padding" "3px 8px 3px 8px"
+    ]

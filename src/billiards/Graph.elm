@@ -4,28 +4,28 @@ module Graph exposing (..)
 constructing simple graphs, give a sequence of points
 like
 
-  data = [(0.0, 0.0), (5.0, 7.0), (8.0, 2.0), ...]
+data = [(0.0, 0.0), (5.0, 7.0), (8.0, 2.0), ...]
 
 or a "time series" like
 
-  data = [1, 2, 4, 9, 7, ...],
+data = [1, 2, 4, 9, 7, ...],
 
 where we assume the time intervals between data points are equal.
 
 The main functions are
 
-  (1)  Graph.drawPointList graphData "yellow" data
+(1) Graph.drawPointList graphData "yellow" data
 
-  (2)  Graph.drawTimeSeries "blue" graphData data
+(2) Graph.drawTimeSeries "blue" graphData data
 
-  (3)  Graph.drawIntegerTimeSeries "blue" graphData data
+(3) Graph.drawIntegerTimeSeries "blue" graphData data
 
 where (1) is for sequences of points, (2) is for seqeunces of integers,
 and (3) is for sequences of floats.
 
 graphData is a structure that defines two rectangles, sourceRect and
-targetRect.  The first should be though of as being in the Cartesian
-plane, the second on the computer screen.  The information in graphData
+targetRect. The first should be though of as being in the Cartesian
+plane, the second on the computer screen. The information in graphData
 is used to define a mapping from the first rectangle to the second.
 
 -}
@@ -37,7 +37,7 @@ import Geometry exposing (..)
 
 
 {-| GraphData is as in the introduction: two rectangles
-  plus some additional data (colors)
+plus some additional data (colors)
 -}
 type alias GraphMap =
     { sourceRect : Rect
@@ -46,15 +46,15 @@ type alias GraphMap =
 
 
 {-| boundingRect returns an SVG representation of
-  the targetRect in graphData.
+the targetRect in graphData.
 -}
 boundingRect : GraphMap -> Svg msg
 boundingRect graphMap =
     S.rect
-        [ x (toString graphMap.targetRect.corner.x)
-        , y (toString graphMap.targetRect.corner.y)
-        , width (toString graphMap.targetRect.size.width)
-        , height (toString graphMap.targetRect.size.height)
+        [ x (String.fromFloat graphMap.targetRect.corner.x)
+        , y (String.fromFloat graphMap.targetRect.corner.y)
+        , width (String.fromFloat graphMap.targetRect.size.width)
+        , height (String.fromFloat graphMap.targetRect.size.height)
         , fill (rgba graphMap.targetRect.fillColor)
         , stroke (rgba graphMap.targetRect.strokeColor)
         ]
@@ -62,9 +62,9 @@ boundingRect graphMap =
 
 
 {-| AffineTransformData carries the coefficients of an
-  affine transformation
-    xx = ax + b
-    yy= cy + d
+affine transformation
+xx = ax + b
+yy= cy + d
 -}
 type alias AffineTransformData =
     { a : Float
@@ -75,9 +75,9 @@ type alias AffineTransformData =
 
 
 {-| affineTransformData takes a GraphData object and
-  returns an AffineTransformData object such that the
-  associated affine transformation maps sourceRect to
-  targetRect.
+returns an AffineTransformData object such that the
+associated affine transformation maps sourceRect to
+targetRect.
 -}
 affineTransformData : GraphMap -> AffineTransformData
 affineTransformData graphMap =
@@ -98,28 +98,28 @@ affineTransformData graphMap =
 
 
 {-| affineTransformPoint affineTransformData is
-  an affine transformation.
+an affine transformation.
 -}
 affineTransformPoint : AffineTransformData -> Point -> Point
-affineTransformPoint affineTransformData point =
+affineTransformPoint affineTransformData_ point =
     let
         x =
-            affineTransformData.a * point.x + affineTransformData.b
+            affineTransformData_.a * point.x + affineTransformData_.b
 
         y =
-            affineTransformData.c * point.y + affineTransformData.d
+            affineTransformData_.c * point.y + affineTransformData_.d
     in
         Point x y
 
 
 affineTransformSize : AffineTransformData -> Size -> Size
-affineTransformSize affineTransformData size =
+affineTransformSize affineTransformData_ size =
     let
         w =
-            (abs affineTransformData.a) * size.width
+            (abs affineTransformData_.a) * size.width
 
         h =
-            (abs affineTransformData.c) * size.height
+            (abs affineTransformData_.c) * size.height
 
         -- 5.0 * size.height
     in
@@ -127,17 +127,17 @@ affineTransformSize affineTransformData size =
 
 
 {-| affineTransformPoints affineTransformData is a function
-  that applies an affine transformation to a list of points,
-  returning a new list of points.
+that applies an affine transformation to a list of points,
+returning a new list of points.
 -}
 affineTransformPoints : AffineTransformData -> Points -> Points
-affineTransformPoints affineTransformData points =
-    List.map (affineTransformPoint affineTransformData) points
+affineTransformPoints affineTransformData_ points =
+    List.map (affineTransformPoint affineTransformData_) points
 
 
-{-| zip [a, b, c] [1, 2, 3] = [(a,1), (b,2), (c,3)]
-  The (,) expression is a shortcut to create 2-tuples, so
-  evaluating ((,) 3 4) results in (3,4)
+{-| zip [a, b, c][1, 2, 3] = [(a,1), (b,2), (c,3)]
+The (,) expression is a shortcut to create 2-tuples, so
+evaluating ((,) 3 4) results in (3,4)
 -}
 
 
@@ -170,12 +170,12 @@ timeSeries data =
 -}
 point2String : Point -> String
 point2String point =
-    (toString point.x) ++ ", " ++ (toString point.y)
+    (String.fromFloat point.x) ++ ", " ++ (String.fromFloat point.y)
 
 
 {-| data2SVG GraphData [(0, 2), (1,4), (2,3)]
-  => "0,2  1,4  2,3"
-  data2SVG : GraphData -> Svg Msg
+=> "0,2 1,4 2,3"
+data2SVG : GraphData -> Svg Msg
 -}
 data2SVG : GraphMap -> Points -> String
 data2SVG graphMap points =
@@ -193,7 +193,7 @@ data2SVG graphMap points =
 
 
 {-| drawPointList graphData "yellow" [(0.0, 0.0), (100.0, 20.0), (200.0, 0.0)]
-  produces an SVG representation of the given polygonal path.
+produces an SVG representation of the given polygonal path.
 -}
 drawPoints : GraphMap -> XColor -> Points -> S.Svg msg
 drawPoints graphMap color data =
@@ -203,7 +203,7 @@ drawPoints graphMap color data =
 
 drawPolygon : GraphMap -> String -> String -> Float -> Points -> S.Svg msg
 drawPolygon graphMap strokeColor fillColor opacityValue data =
-    polygon [ fill fillColor, stroke strokeColor, opacity (toString opacityValue), points (data2SVG graphMap data) ] []
+    polygon [ fill fillColor, stroke strokeColor, opacity (String.fromFloat opacityValue), points (data2SVG graphMap data) ] []
 
 
 drawRect : GraphMap -> Rect -> S.Svg msg
@@ -224,7 +224,7 @@ drawRect graphMap rect =
         size2 =
             affs rect.size
     in
-        S.rect [ fill (rgba rect.fillColor), stroke (rgba rect.fillColor), x (toString corner2.x), y (toString corner2.y), width (toString size2.width), height (toString size2.height) ] []
+        S.rect [ fill (rgba rect.fillColor), stroke (rgba rect.fillColor), x (String.fromFloat corner2.x), y (String.fromFloat corner2.y), width (String.fromFloat size2.width), height (String.fromFloat size2.height) ] []
 
 
 drawCircle : GraphMap -> Circle -> S.Svg msg
@@ -251,12 +251,13 @@ drawCircle graphMap circle =
         ellipse
             [ fill (rgba circle.fillColor)
             , stroke (rgba circle.fillColor)
-            , SA.cx (toString center2.x)
-            , SA.cy (toString center2.y)
-            , SA.rx (toString (radii2.width))
-              --, SA.rx "20.0"
-              -- , SA.ry "20.0"
-            , SA.ry (toString (radii2.height))
+            , SA.cx (String.fromFloat center2.x)
+            , SA.cy (String.fromFloat center2.y)
+            , SA.rx (String.fromFloat (radii2.width))
+
+            --, SA.rx "20.0"
+            -- , SA.ry "20.0"
+            , SA.ry (String.fromFloat (radii2.height))
             ]
             []
 
@@ -272,8 +273,8 @@ drawLine graphMap color p q =
 
 
 {-| drawTimeSeries "yellow" graphData [1.0, 1.2, 3.1, 2.2, ..)]
-  produces an SVG representation the polgonal path
-  [(0, 1.0), (1, 1.2), (2, 3.1), (3, 2.2), ..)]
+produces an SVG representation the polgonal path
+[(0, 1.0), (1, 1.2), (2, 3.1), (3, 2.2), ..)]
 -}
 drawTimeSeries : GraphMap -> XColor -> List Float -> S.Svg msg
 drawTimeSeries graphMap color data =
@@ -281,8 +282,8 @@ drawTimeSeries graphMap color data =
 
 
 {-| drawIntegerTimeSeries "yellow" graphData [1, 2, 3, 2, ..)]
-  produces an SVG representation the polgonal path
-  [(0, 1), (1, 2), (2, 3), (3, 2), ..)]
+produces an SVG representation the polgonal path
+[(0, 1), (1, 2), (2, 3), (3, 2), ..)]
 -}
 drawIntegerTimeSeries : GraphMap -> XColor -> List Int -> S.Svg msg
 drawIntegerTimeSeries graphMap color data =

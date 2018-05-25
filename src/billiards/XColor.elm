@@ -35,4 +35,4 @@ transparentColor =
 
 rgba : XColor -> String
 rgba color =
-    "rgba(" ++ (toString color.r) ++ "," ++ (toString color.g) ++ "," ++ (toString color.b) ++ "," ++ (toString color.a) ++ ")"
+    "rgba(" ++ (String.fromInt color.r) ++ "," ++ (String.fromInt color.g) ++ "," ++ (String.fromInt color.b) ++ "," ++ (String.fromFloat color.a) ++ ")"
