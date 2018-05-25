@@ -4,6 +4,7 @@
 
 module Dice2App exposing (..)
 
+import Browser
 import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (..)
@@ -11,7 +12,7 @@ import Random
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -28,8 +29,12 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( Model 1, Cmd.none )
 
 
@@ -67,14 +72,14 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    div [ basicStyle ]
-        [ bigLabel (toString model.dieFace)
+    div basicStyle
+        [ bigLabel (String.fromInt model.dieFace)
         , basicButton Roll "Roll" buttonStyle
         ]
 
 
 bigLabel str =
-    h1 [ style [ ( "text-align", "center" ) ] ]
+    h1 [ style "text-align" "center" ]
         [ text str ]
 
 
@@ -83,26 +88,24 @@ bigLabel str =
 
 
 basicStyle =
-    style
-        [ ( "height", "120px" )
-        , ( "width", "80px" )
-        , ( "background-color", "#ddd" )
-        , ( "margin-top", "30px" )
-        , ( "margin-left", "20px" )
-        , ( "padding", "20px" )
-        ]
+    [ style "height" "120px"
+    , style "width" "80px"
+    , style "background-color" "#ddd"
+    , style "margin-top" "30px"
+    , style "margin-left" "20px"
+    , style "padding" "20px"
+    ]
 
 
 basicButton action label style =
-    button [ onClick action, style ] [ text "Roll" ]
+    button ([ onClick action ] ++ style) [ text "Roll" ]
 
 
 buttonStyle =
-    style
-        [ ( "height", "40px" )
-        , ( "width", "80px" )
-        , ( "background-color", "#444" )
-        , ( "font-size", "12pt" )
-        , ( "color", "#fff" )
-        , ( "padding", "8px" )
-        ]
+    [ style "height" "40px"
+    , style "width" "80px"
+    , style "background-color" "#444"
+    , style "font-size" "12pt"
+    , style "color" "#fff"
+    , style "padding" "8px"
+    ]

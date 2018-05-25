@@ -1,12 +1,13 @@
 module Dice1App exposing (..)
 
+import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Random
 
 
 main =
-    Html.program
+    Browser.embed
         { init = init
         , view = view
         , update = update
@@ -23,8 +24,12 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( Model 1, Cmd.none )
 
 
@@ -63,6 +68,6 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text (toString model.dieFace) ]
+        [ h1 [] [ text (String.fromInt model.dieFace) ]
         , button [ onClick Roll ] [ text "Roll" ]
         ]
