@@ -17,7 +17,7 @@ import Physics exposing (..)
 
 
 main =
-    Browser.embed
+    Browser.element
         { init = init
         , view = view
         , update = update

@@ -13,7 +13,7 @@ import View exposing (view)
 
 
 main =
-    Browser.embed
+    Browser.element
         { init = init
         , view = view
         , update = update

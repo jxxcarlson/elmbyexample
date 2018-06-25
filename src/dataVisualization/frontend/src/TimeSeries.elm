@@ -15,7 +15,7 @@ import Data
 
 
 main =
-    Browser.embed
+    Browser.element
         { init = init
         , view = view
         , update = update

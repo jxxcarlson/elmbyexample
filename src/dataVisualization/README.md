@@ -14,7 +14,7 @@ a web server.
 
 Directions:
 
-1. To run the data server, do `python servers/dataServer.py 8000`.  
+1. To run the data server, do `python backend/dataServer.py 8000`.  
 
 2. Return to the root of this folder and run `elm make src/TimeSeries.elm`. Then open `index.html`
 
