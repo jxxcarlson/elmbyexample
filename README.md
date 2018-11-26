@@ -17,12 +17,11 @@ I do appreciate comments, corrections, and suggestions:
 
 Lower case names are folders, upper case names are modules.
 
-- basicApp
+- basicApp (Browser.sandbox)
   - scoreApp1 — one button, one counter, a record with one field, based on [Elm Guide](https://guide.elm-lang.org/architecture/buttons.html)
   - scoreApp2 — the same as above but with some CSS styling using `elm/html`.
   - scoreApp3 — the same, but uses `mdgriffith/elm-ui` for style.
-- billiards -- a simulation of billiard balls bouncing around in
-  rectangular container.
+- billiards (Browser.element) — a simulation of billiard balls bouncing around in rectangular container.
 - crypt -- Two apps for playing with encryption
   - CaesarApp
   - VigenereApp
