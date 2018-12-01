@@ -90,20 +90,6 @@ mainColumn model =
         ]
 
 
-
---
--- STYLE
---
-
-
-mainColumnStyle =
-    [ centerX
-    , centerY
-    , Background.color (rgb255 240 240 240)
-    , paddingXY 20 20
-    ]
-
-
 title : String -> Element msg
 title str =
     row [ centerX, Font.bold ] [ text str ]
@@ -133,6 +119,20 @@ appButton =
             , label = el [ centerX, centerY ] (text "Reverse")
             }
         ]
+
+
+
+--
+-- STYLE
+--
+
+
+mainColumnStyle =
+    [ centerX
+    , centerY
+    , Background.color (rgb255 240 240 240)
+    , paddingXY 20 20
+    ]
 
 
 buttonStyle =
