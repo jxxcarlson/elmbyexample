@@ -18,6 +18,7 @@ import Element.Background as Background
 import Element.Font as Font
 import Element.Input as Input
 import Http
+import Message exposing (Message)
 
 
 main =
@@ -27,13 +28,6 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
-
-
-type alias Message =
-    { recipient : String
-    , key : String
-    , value : String
-    }
 
 
 type alias Model =
@@ -46,6 +40,8 @@ type alias Model =
 
 type Msg
     = NoOp
+    | Tick Time.Posix
+    | AdjustTimeZone Time.Zone
     | InputText String
     | SendMessage
     | ReceivedMessage E.Value
@@ -72,7 +68,8 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { input = ""
       , output = "App started"
-      , time = Model Time.utc (Time.millisToPosix 0)
+      , zone = Time.utc
+      , time = Time.millisToPosix 0
       }
     , Task.perform AdjustTimeZone Time.here
     )
@@ -87,6 +84,16 @@ update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        Tick newTime ->
+            ( { model | time = newTime }
+            , Cmd.none
+            )
+
+        AdjustTimeZone newZone ->
+            ( { model | zone = newZone }
+            , Cmd.none
+            )
 
         InputText str ->
             ( { model | input = str }, Cmd.none )
