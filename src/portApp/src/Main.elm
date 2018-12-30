@@ -51,6 +51,9 @@ port sendMessage : E.Value -> Cmd msg
 port getMessage : E.Value -> Cmd msg
 
 
+port getAndDeleteMessage : E.Value -> Cmd msg
+
+
 port receiveMessage : (E.Value -> msg) -> Sub msg
 
 
@@ -88,7 +91,7 @@ update msg model =
                     ( { model | output = "Message   error" }, Cmd.none )
 
         GetMessage ->
-            ( model, getMessage (E.string "getMessage") )
+            ( model, getAndDeleteMessage (E.string "getMessage") )
 
 
 
