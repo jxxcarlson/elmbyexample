@@ -35,12 +35,15 @@ type alias Model =
     , output : String
     , zone : Time.Zone
     , time : Time.Posix
+    , thisAppId : String
+    , otherAppId : String
     }
 
 
 type Msg
     = NoOp
     | Tick Time.Posix
+    | NewTime Time.Posix
     | AdjustTimeZone Time.Zone
     | InputText String
     | SendMessage
@@ -49,10 +52,15 @@ type Msg
 
 
 type alias Flags =
-    {}
+    { thisAppId : String
+    , otherAppId : String
+    }
 
 
 port sendMessage : E.Value -> Cmd msg
+
+
+port receiveMessage : (E.Value -> msg) -> Sub msg
 
 
 port getMessage : E.Value -> Cmd msg
@@ -61,22 +69,24 @@ port getMessage : E.Value -> Cmd msg
 port getAndDeleteMessage : E.Value -> Cmd msg
 
 
-port receiveMessage : (E.Value -> msg) -> Sub msg
-
-
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { input = ""
       , output = "App started"
       , zone = Time.utc
       , time = Time.millisToPosix 0
+      , thisAppId = flags.thisAppId
+      , otherAppId = flags.otherAppId
       }
     , Task.perform AdjustTimeZone Time.here
     )
 
 
 subscriptions model =
-    receiveMessage ReceivedMessage
+    Sub.batch
+        [ Time.every 1000 Tick
+        , receiveMessage ReceivedMessage
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -86,9 +96,10 @@ update msg model =
             ( model, Cmd.none )
 
         Tick newTime ->
-            ( { model | time = newTime }
-            , Cmd.none
-            )
+            ( model, getNewTime )
+
+        NewTime newTime ->
+            ( { model | time = newTime }, Cmd.none )
 
         AdjustTimeZone newZone ->
             ( { model | zone = newZone }
@@ -99,7 +110,17 @@ update msg model =
             ( { model | input = str }, Cmd.none )
 
         SendMessage ->
-            ( { model | output = "Sent message" }, sendMessage (E.string model.input) )
+            let
+                message =
+                    Message.encode model.zone
+                        { sender = model.thisAppId
+                        , recipient = model.otherAppId
+                        , key = "message"
+                        , value = model.input
+                        , time = model.time
+                        }
+            in
+                ( { model | output = "Sent message" }, sendMessage message )
 
         ReceivedMessage value ->
             case D.decodeValue D.string value of
@@ -111,6 +132,11 @@ update msg model =
 
         GetMessage ->
             ( model, getAndDeleteMessage (E.string "getMessage") )
+
+
+getNewTime : Cmd Msg
+getNewTime =
+    Task.perform NewTime Time.now
 
 
 
@@ -128,7 +154,7 @@ mainColumn : Model -> Element Msg
 mainColumn model =
     column mainColumnStyle
         [ column [ centerX, spacing 20 ]
-            [ title "Message app"
+            [ title <| "App " ++ model.thisAppId
             , inputText model
             , sendMessageButton
             , getMessageButton
