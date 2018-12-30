@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>App a0b3</title>
+  <link rel="stylesheet" href="whatever-you-want.css">
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div id="elm"></div>
+  <script>
+  var app = Elm.Main.init({
+    node: document.getElementById('elm')
+  });
+
+  var app_id = 'a0b3'
+
+  var other_app_id = 'fff9'
+
+  app.ports.sendMessage.subscribe(function(data) {
+    localStorage.setItem(app_id, JSON.stringify(data));
+  });
+
+  app.ports.getMessage.subscribe(function(data) {
+    console.log("GET MESSAGE")
+    var message_ = localStorage.getItem(other_app_id)
+    app.ports.receiveMessage.send(message_);
+  });
+
+
+  var message = localStorage.getItem(other_app_id)
+
+  console.log("Message for " + app_id + ": "+ message)
+
+  app.ports.receiveMessage.send(message);
+  </script>
+</body>
+</html>
