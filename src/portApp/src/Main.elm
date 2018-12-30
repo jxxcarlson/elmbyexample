@@ -123,12 +123,13 @@ update msg model =
                 ( { model | output = "Sent message" }, sendMessage message )
 
         ReceivedMessage value ->
-            case D.decodeValue D.string value of
+            -- case D.decodeValue D.string value of
+            case Message.decode model.zone value of
                 Ok message ->
-                    ( { model | output = "Message: " ++ message }, Cmd.none )
+                    ( { model | output = "Message: " ++ message.value }, Cmd.none )
 
-                Err str ->
-                    ( { model | output = "Message   error" }, Cmd.none )
+                Err err ->
+                    ( { model | output = D.errorToString err }, Cmd.none )
 
         GetMessage ->
             ( model, getAndDeleteMessage (E.string "getMessage") )

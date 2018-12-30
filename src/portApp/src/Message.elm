@@ -1,4 +1,4 @@
-module Message exposing (Message, encode)
+module Message exposing (Message, encode, decode)
 
 import Json.Encode as E
 import Json.Decode as D
@@ -16,11 +16,11 @@ type alias Message =
 
 encode : Time.Zone -> Message -> E.Value
 encode zone message =
-    encoder zone message
+    messageEncoder zone message
 
 
-encoder : Time.Zone -> Message -> E.Value
-encoder zone message =
+messageEncoder : Time.Zone -> Message -> E.Value
+messageEncoder zone message =
     E.object
         [ ( "sender", E.string message.sender )
         , ( "recipient", E.string message.recipient )
@@ -30,6 +30,11 @@ encoder zone message =
         ]
 
 
+decode : Time.Zone -> E.Value -> Result D.Error Message
+decode zone value =
+    D.decodeValue (messageDecoder zone) value
+
+
 messageDecoder : Time.Zone -> D.Decoder Message
 messageDecoder zone =
     D.map5 Message
@@ -37,4 +42,4 @@ messageDecoder zone =
         (D.field "recipient" D.string)
         (D.field "key" D.string)
         (D.field "value" D.string)
-        ((D.field "time" D.string) |> D.map (String.toInt >> Maybe.withDefault 0 >> Time.millisToPosix))
+        ((D.field "time" D.int) |> D.map Time.millisToPosix)

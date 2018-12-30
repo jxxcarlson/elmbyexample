@@ -21,13 +21,14 @@
   var other_app_id = 'fff9'
 
   app.ports.sendMessage.subscribe(function(data) {
+     console.log("DATA: " + JSON.stringify(data))
     localStorage.setItem(app_id, JSON.stringify(data));
   });
 
   app.ports.getAndDeleteMessage.subscribe(function(data) {
     var message_ = localStorage.getItem(other_app_id)
     localStorage.setItem(other_app_id, "none")
-    app.ports.receiveMessage.send(message_)
+    app.ports.receiveMessage.send(JSON.parse(message_))
   });
 
   app.ports.getMessage.subscribe(function(data) {
