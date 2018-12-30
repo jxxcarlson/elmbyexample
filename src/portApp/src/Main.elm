@@ -11,6 +11,8 @@ import Browser
 import Html exposing (Html)
 import Json.Encode as E
 import Json.Decode as D
+import Task
+import Time
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
@@ -27,9 +29,18 @@ main =
         }
 
 
+type alias Message =
+    { recipient : String
+    , key : String
+    , value : String
+    }
+
+
 type alias Model =
     { input : String
     , output : String
+    , zone : Time.Zone
+    , time : Time.Posix
     }
 
 
@@ -61,8 +72,9 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { input = ""
       , output = "App started"
+      , time = Model Time.utc (Time.millisToPosix 0)
       }
-    , Cmd.none
+    , Task.perform AdjustTimeZone Time.here
     )
 
 
