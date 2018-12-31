@@ -18,16 +18,14 @@
   });
 
   app.ports.sendMessage.subscribe(function(data) {
-    var currentList = JSON.parse(localStorage.getItem(appFlags.otherAppId))
-    console.log("currentList (1): " + JSON.stringify(currentList))
-    var newList = [data]
-    console.log("newList (1): " + JSON.stringify(newList))
-    localStorage.setItem(appFlags.otherAppId, JSON.stringify(newList));
+    var messageList = JSON.parse(localStorage.getItem(appFlags.otherAppId))
+    messageList.push(data)
+    localStorage.setItem(appFlags.otherAppId, JSON.stringify(messageList));
   });
 
   app.ports.getMessage.subscribe(function(data) {
     var message_ = localStorage.getItem(appFlags.thisAppId)
-    localStorage.setItem(appFlags.otherAppId, "[]")
+    localStorage.setItem(appFlags.thisAppId, "[]")
     app.ports.receiveMessage.send(JSON.parse(message_))
   });
 
