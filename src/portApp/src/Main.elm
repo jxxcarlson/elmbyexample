@@ -113,12 +113,12 @@ update msg model =
         SendMessage ->
             let
                 message =
-                    Message.encode model.zone
+                    Message.encode model.time
                         { from = model.thisAppId
                         , to = model.otherAppId
                         , subject = "message"
                         , body = model.input
-                        , timeSent = model.time
+                        , expiration = 60
                         }
             in
                 ( { model
@@ -132,7 +132,7 @@ update msg model =
             case Message.decodeMessageList model.zone value of
                 Ok messageList ->
                     ( { model
-                        | messageList = messageList
+                        | messageList = model.messageList ++ messageList
                         , output = "Messages: " ++ (String.fromInt (List.length messageList))
                       }
                     , Cmd.none

@@ -1,4 +1,4 @@
-module Message exposing (Message, encode, decode, decodeMessageList)
+module Message exposing (Message, MessageForm, encode, decode, decodeMessageList)
 
 import Json.Encode as E
 import Json.Decode as D
@@ -14,19 +14,38 @@ type alias Message =
     }
 
 
-encode : Time.Zone -> Message -> E.Value
-encode zone message =
-    messageEncoder zone message
+type alias MessageForm =
+    { to : String
+    , from : String
+    , subject : String
+    , body : String
+    , expiration : Int
+    }
 
 
-messageEncoder : Time.Zone -> Message -> E.Value
-messageEncoder zone message =
+messageFromForm : Time.Posix -> MessageForm -> Message
+messageFromForm time messageForm =
+    { to = messageForm.to
+    , from = messageForm.from
+    , subject = messageForm.subject
+    , body = messageForm.body
+    , timeSent = time
+    }
+
+
+encode : Time.Posix -> MessageForm -> E.Value
+encode time messageForm =
+    messageEncoder (messageFromForm time messageForm)
+
+
+messageEncoder : Message -> E.Value
+messageEncoder message =
     E.object
         [ ( "to", E.string message.to )
         , ( "from", E.string message.from )
         , ( "subject", E.string message.subject )
         , ( "body", E.string message.body )
-        , ( "timeSent", E.int (Time.toMillis zone message.timeSent) )
+        , ( "timeSent", E.int (Time.posixToMillis message.timeSent) )
         ]
 
 
