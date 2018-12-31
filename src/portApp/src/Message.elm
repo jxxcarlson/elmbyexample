@@ -10,7 +10,7 @@ type alias Message =
     , from : String
     , subject : String
     , body : String
-    , time : Time.Posix
+    , timeSent : Time.Posix
     }
 
 
@@ -26,7 +26,7 @@ messageEncoder zone message =
         , ( "from", E.string message.from )
         , ( "subject", E.string message.subject )
         , ( "body", E.string message.body )
-        , ( "time", E.int (Time.toMillis zone message.time) )
+        , ( "timeSent", E.int (Time.toMillis zone message.timeSent) )
         ]
 
 
@@ -52,4 +52,4 @@ messageDecoder zone =
         (D.field "from" D.string)
         (D.field "subject" D.string)
         (D.field "body" D.string)
-        ((D.field "time" D.int) |> D.map Time.millisToPosix)
+        ((D.field "timeSent" D.int) |> D.map Time.millisToPosix)

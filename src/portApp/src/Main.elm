@@ -118,7 +118,7 @@ update msg model =
                         , from = model.otherAppId
                         , subject = "message"
                         , body = model.input
-                        , time = model.time
+                        , timeSent = model.time
                         }
             in
                 ( { model
