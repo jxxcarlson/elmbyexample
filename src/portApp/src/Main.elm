@@ -114,10 +114,10 @@ update msg model =
             let
                 message =
                     Message.encode model.zone
-                        { sender = model.thisAppId
-                        , recipient = model.otherAppId
-                        , key = "message"
-                        , value = model.input
+                        { to = model.thisAppId
+                        , from = model.otherAppId
+                        , subject = "message"
+                        , body = model.input
                         , time = model.time
                         }
             in
@@ -194,7 +194,7 @@ messageListDisplay model =
 
 messageDisplay : Int -> Message -> Element msg
 messageDisplay k message =
-    row [ Font.size 14 ] [ text <| (String.fromInt (k + 1)) ++ ". " ++ message.value ]
+    row [ Font.size 14 ] [ text <| (String.fromInt (k + 1)) ++ ". " ++ message.body ]
 
 
 inputText : Model -> Element Msg

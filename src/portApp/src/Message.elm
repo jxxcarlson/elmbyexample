@@ -6,10 +6,10 @@ import Time
 
 
 type alias Message =
-    { sender : String
-    , recipient : String
-    , key : String
-    , value : String
+    { to : String
+    , from : String
+    , subject : String
+    , body : String
     , time : Time.Posix
     }
 
@@ -22,10 +22,10 @@ encode zone message =
 messageEncoder : Time.Zone -> Message -> E.Value
 messageEncoder zone message =
     E.object
-        [ ( "sender", E.string message.sender )
-        , ( "recipient", E.string message.recipient )
-        , ( "key", E.string message.key )
-        , ( "value", E.string message.value )
+        [ ( "to", E.string message.to )
+        , ( "from", E.string message.from )
+        , ( "subject", E.string message.subject )
+        , ( "body", E.string message.body )
         , ( "time", E.int (Time.toMillis zone message.time) )
         ]
 
@@ -48,8 +48,8 @@ messageListDecoder zone =
 messageDecoder : Time.Zone -> D.Decoder Message
 messageDecoder zone =
     D.map5 Message
-        (D.field "sender" D.string)
-        (D.field "recipient" D.string)
-        (D.field "key" D.string)
-        (D.field "value" D.string)
+        (D.field "to" D.string)
+        (D.field "from" D.string)
+        (D.field "subject" D.string)
+        (D.field "body" D.string)
         ((D.field "time" D.int) |> D.map Time.millisToPosix)
