@@ -188,12 +188,12 @@ outputDisplay model =
 
 messageListDisplay : Model -> Element msg
 messageListDisplay model =
-    column [ height (px 340), spacing 4, scrollbarY ] (model.messageList |> List.indexedMap messageDisplay)
+    column [ height (px 340), spacing 4, scrollbarY ] (model.messageList |> List.indexedMap (messageDisplay model.zone))
 
 
-messageDisplay : Int -> Message -> Element msg
-messageDisplay k message =
-    row [ Font.size 14 ] [ text <| (String.fromInt (k + 1)) ++ ". " ++ message.body ]
+messageDisplay : Time.Zone -> Int -> Message -> Element msg
+messageDisplay zone k message =
+    row [ Font.size 14 ] [ text <| (String.fromInt (k + 1)) ++ ". " ++ (Message.niceDate zone message.timeSent) ++ "  " ++ message.body ]
 
 
 inputText : Model -> Element Msg

@@ -1,4 +1,4 @@
-module Message exposing (Message, MessageForm, encode, decode, decodeMessageList)
+module Message exposing (Message, MessageForm, encode, decode, decodeMessageList, niceDate)
 
 import Json.Encode as E
 import Json.Decode as D
@@ -72,3 +72,84 @@ messageDecoder zone =
         (D.field "subject" D.string)
         (D.field "body" D.string)
         ((D.field "timeSent" D.int) |> D.map Time.millisToPosix)
+
+
+niceDate : Time.Zone -> Time.Posix -> String
+niceDate zone time =
+    let
+        second =
+            Time.toSecond zone time |> padZero
+
+        minute =
+            Time.toMinute zone time |> padZero
+
+        hour =
+            Time.toHour zone time |> padZero
+
+        day =
+            Time.toDay zone time |> padZero
+
+        month =
+            monthString zone time
+
+        year =
+            Time.toYear zone time |> padZero
+    in
+        month ++ "-" ++ day ++ "-" ++ year ++ " " ++ hour ++ ":" ++ minute ++ ":" ++ second
+
+
+monthString : Time.Zone -> Time.Posix -> String
+monthString zone time =
+    case Time.toMonth zone time of
+        Time.Jan ->
+            "01"
+
+        Time.Feb ->
+            "02"
+
+        Time.Mar ->
+            "03"
+
+        Time.Apr ->
+            "04"
+
+        Time.May ->
+            "05"
+
+        Time.Jun ->
+            "06"
+
+        Time.Jul ->
+            "07"
+
+        Time.Aug ->
+            "08"
+
+        Time.Sep ->
+            "09"
+
+        Time.Oct ->
+            "10"
+
+        Time.Nov ->
+            "11"
+
+        Time.Dec ->
+            "12"
+
+
+padZero : Int -> String
+padZero n =
+    let
+        str =
+            String.fromInt n
+    in
+        case String.length str of
+            0 ->
+                "00"
+
+            1 ->
+                "0" ++ str
+
+            _ ->
+                str
