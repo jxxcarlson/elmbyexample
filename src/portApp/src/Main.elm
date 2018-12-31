@@ -66,9 +66,6 @@ port receiveMessage : (E.Value -> msg) -> Sub msg
 port getMessage : E.Value -> Cmd msg
 
 
-port getAndDeleteMessage : E.Value -> Cmd msg
-
-
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { input = ""
@@ -132,7 +129,7 @@ update msg model =
                     ( { model | output = D.errorToString err }, Cmd.none )
 
         GetMessage ->
-            ( model, getAndDeleteMessage (E.string "getMessage") )
+            ( model, getMessage (E.string "getMessage") )
 
 
 getNewTime : Cmd Msg

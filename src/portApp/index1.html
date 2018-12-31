@@ -25,16 +25,12 @@
     localStorage.setItem(app_id, JSON.stringify(data));
   });
 
-  app.ports.getAndDeleteMessage.subscribe(function(data) {
+  app.ports.getMessage.subscribe(function(data) {
     var message_ = localStorage.getItem(other_app_id)
-    localStorage.setItem(other_app_id, "none")
+    localStorage.setItem(other_app_id, '{"sender":"fff9","recipient":"a0b3","key":"message","value":"none","time":0}')
     app.ports.receiveMessage.send(JSON.parse(message_))
   });
 
-  app.ports.getMessage.subscribe(function(data) {
-    var message_ = localStorage.getItem(other_app_id)
-    app.ports.receiveMessage.send(message_)
-  });
   // var message = localStorage.getItem(other_app_id)
 
   console.log("Message for " + app_id + ": "+ message)
