@@ -114,8 +114,8 @@ update msg model =
             let
                 message =
                     Message.encode model.zone
-                        { to = model.thisAppId
-                        , from = model.otherAppId
+                        { from = model.thisAppId
+                        , to = model.otherAppId
                         , subject = "message"
                         , body = model.input
                         , timeSent = model.time
@@ -129,7 +129,6 @@ update msg model =
                 )
 
         ReceivedMessage value ->
-            -- case D.decodeValue D.string value of
             case Message.decodeMessageList model.zone value of
                 Ok messageList ->
                     ( { model
