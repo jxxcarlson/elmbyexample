@@ -37,6 +37,7 @@ type alias Model =
     , time : Time.Posix
     , thisAppId : String
     , otherAppId : String
+    , messageList : List Message
     }
 
 
@@ -74,6 +75,7 @@ init flags =
       , time = Time.millisToPosix 0
       , thisAppId = flags.thisAppId
       , otherAppId = flags.otherAppId
+      , messageList = []
       }
     , Task.perform AdjustTimeZone Time.here
     )
@@ -121,15 +123,34 @@ update msg model =
 
         ReceivedMessage value ->
             -- case D.decodeValue D.string value of
-            case Message.decode model.zone value of
-                Ok message ->
-                    ( { model | output = "Message: " ++ message.value }, Cmd.none )
+            case Message.decodeMessageList model.zone value of
+                Ok messageList ->
+                    ( { model
+                        | messageList = messageList
+                        , output = messageReport messageList
+                      }
+                    , Cmd.none
+                    )
 
                 Err err ->
                     ( { model | output = D.errorToString err }, Cmd.none )
 
         GetMessage ->
             ( model, getMessage (E.string "getMessage") )
+
+
+messageReport : List Message -> String
+messageReport messageList =
+    let
+        n =
+            String.fromInt <| List.length messageList
+    in
+        case List.head messageList of
+            Just message ->
+                message.value ++ " (1/" ++ n ++ ")"
+
+            Nothing ->
+                "No messages"
 
 
 getNewTime : Cmd Msg

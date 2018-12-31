@@ -1,4 +1,4 @@
-module Message exposing (Message, encode, decode)
+module Message exposing (Message, encode, decode, decodeMessageList)
 
 import Json.Encode as E
 import Json.Decode as D
@@ -33,6 +33,16 @@ messageEncoder zone message =
 decode : Time.Zone -> E.Value -> Result D.Error Message
 decode zone value =
     D.decodeValue (messageDecoder zone) value
+
+
+decodeMessageList : Time.Zone -> E.Value -> Result D.Error (List Message)
+decodeMessageList zone value =
+    D.decodeValue (messageListDecoder zone) value
+
+
+messageListDecoder : Time.Zone -> D.Decoder (List Message)
+messageListDecoder zone =
+    D.list (messageDecoder zone)
 
 
 messageDecoder : Time.Zone -> D.Decoder Message

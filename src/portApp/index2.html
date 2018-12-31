@@ -10,31 +10,32 @@
 <body>
   <div id="elm"></div>
   <script>
+  var appFlags = {"thisAppId": "fff9", "otherAppId":  "a0b3"}
   var app = Elm.Main.init({
     node: document.getElementById('elm')
-  , flags : {"thisAppId": "fff9", "otherAppId":  "a0b3"}
+  , flags : appFlags
   });
-
-  var app_id = 'fff9'
-
-  var other_app_id = 'a0b3'
 
   app.ports.sendMessage.subscribe(function(data) {
-     console.log("DATA: " + JSON.stringify(data))
-    localStorage.setItem(app_id, JSON.stringify(data));
+    var currentList = JSON.parse(localStorage.getItem(appFlags.otherAppId))
+    console.log("currentList (2): " + JSON.stringify(currentList))
+    var newList = [data]
+    console.log("newList (2): " + JSON.stringify(newList))
+    localStorage.setItem(appFlags.otherAppId, JSON.stringify(newList));
   });
 
+
   app.ports.getMessage.subscribe(function(data) {
-    var message_ = localStorage.getItem(other_app_id)
-    localStorage.setItem(other_app_id, "none")
+    var message_ = localStorage.getItem(appFlags.thisAppId)
+    localStorage.setItem(appFlags.otherAppId, "[]")
     app.ports.receiveMessage.send(JSON.parse(message_))
   });
 
   // var message = localStorage.getItem(other_app_id)
 
-  console.log("Message for " + app_id + ": "+ message)
+  // console.log("Message for " + app_id + ": "+ message)
 
-  app.ports.receiveMessage.send(message);
+  // app.ports.receiveMessage.send(message);
   </script>
 </body>
 </html>
