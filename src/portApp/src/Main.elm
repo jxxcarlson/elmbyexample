@@ -38,6 +38,7 @@ type alias Model =
     , thisAppId : String
     , otherAppId : String
     , messageList : List Message
+    , messagesSentCounter : Int
     }
 
 
@@ -76,6 +77,7 @@ init flags =
       , thisAppId = flags.thisAppId
       , otherAppId = flags.otherAppId
       , messageList = []
+      , messagesSentCounter = 0
       }
     , Task.perform AdjustTimeZone Time.here
     )
@@ -119,7 +121,12 @@ update msg model =
                         , time = model.time
                         }
             in
-                ( { model | output = "Sent message" }, sendMessage message )
+                ( { model
+                    | output = "Sent message #" ++ (String.fromInt (model.messagesSentCounter + 1))
+                    , messagesSentCounter = model.messagesSentCounter + 1
+                  }
+                , sendMessage message
+                )
 
         ReceivedMessage value ->
             -- case D.decodeValue D.string value of
@@ -127,7 +134,7 @@ update msg model =
                 Ok messageList ->
                     ( { model
                         | messageList = messageList
-                        , output = messageReport messageList
+                        , output = "Messages: " ++ (String.fromInt (List.length messageList))
                       }
                     , Cmd.none
                     )
@@ -137,20 +144,6 @@ update msg model =
 
         GetMessage ->
             ( model, getMessage (E.string "getMessage") )
-
-
-messageReport : List Message -> String
-messageReport messageList =
-    let
-        n =
-            String.fromInt <| List.length messageList
-    in
-        case List.head messageList of
-            Just message ->
-                message.value ++ " (1/" ++ n ++ ")"
-
-            Nothing ->
-                "No messages"
 
 
 getNewTime : Cmd Msg
@@ -172,11 +165,12 @@ view model =
 mainColumn : Model -> Element Msg
 mainColumn model =
     column mainColumnStyle
-        [ column [ centerX, spacing 20 ]
+        [ column [ centerX, spacing 20, width (px 400), height (px 600) ]
             [ title <| "App " ++ model.thisAppId
             , inputText model
             , sendMessageButton
             , getMessageButton
+            , messageListDisplay model
             , outputDisplay model
             ]
         ]
@@ -189,8 +183,18 @@ title str =
 
 outputDisplay : Model -> Element msg
 outputDisplay model =
-    row [ centerX ]
+    row [ centerX, Font.size 16 ]
         [ text model.output ]
+
+
+messageListDisplay : Model -> Element msg
+messageListDisplay model =
+    column [ height (px 340), spacing 4, scrollbarY ] (model.messageList |> List.indexedMap messageDisplay)
+
+
+messageDisplay : Int -> Message -> Element msg
+messageDisplay k message =
+    row [ Font.size 14 ] [ text <| (String.fromInt (k + 1)) ++ ". " ++ message.value ]
 
 
 inputText : Model -> Element Msg
@@ -218,7 +222,7 @@ getMessageButton =
     row [ centerX ]
         [ Input.button buttonStyle
             { onPress = Just GetMessage
-            , label = el [ centerX, centerY, width (px 140) ] (text "Get message")
+            , label = el [ centerX, centerY, width (px 140) ] (text "Get messages")
             }
         ]
 
