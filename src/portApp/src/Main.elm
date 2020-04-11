@@ -188,7 +188,13 @@ outputDisplay model =
 
 messageListDisplay : Model -> Element msg
 messageListDisplay model =
-    column [ height (px 340), spacing 4, scrollbarY ] (model.messageList |> List.indexedMap (messageDisplay model.zone))
+    column
+        [ height (px 340)
+        , spacing 4
+        , scrollbarY
+        , paddingXY 4 8
+        ]
+        (model.messageList |> List.indexedMap (messageDisplay model.zone))
 
 
 messageDisplay : Time.Zone -> Int -> Message -> Element msg

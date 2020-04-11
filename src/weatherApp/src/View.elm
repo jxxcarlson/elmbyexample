@@ -1,10 +1,11 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, input, table, td, text, tr, a)
-import Html.Attributes exposing (placeholder, style, type_, href, target)
+import Html exposing (Html, a, button, div, input, table, td, text, tr)
+import Html.Attributes exposing (href, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Types exposing (Model, Msg(..), TemperatureScale(..), Weather, Status(..))
+import Types exposing (Model, Msg(..), Status(..), TemperatureScale(..), Weather)
+
 
 
 {- Main view function -}
@@ -21,6 +22,7 @@ view model =
             , messageLine model
             , showIf (not <| List.member model.status [ Authenticated, Starting ]) (setApiKeyInput model)
             , showIf (not <| List.member model.status [ Authenticated, Starting ]) getApiKeyLink
+            , apiLine
             ]
         ]
 
@@ -28,6 +30,7 @@ view model =
 showIf condition element =
     if condition then
         element
+
     else
         text ""
 
@@ -39,7 +42,6 @@ showIf condition element =
 mainStyle =
     [ style "margin" "15px"
     , style "margin-top" "20px"
-    , style "background-color" "#eee"
     , style "width" "240px"
     ]
 
@@ -78,22 +80,30 @@ setTemperatureControl model =
         ]
 
 
+dark =
+    "#1b508c"
+
+
+light =
+    "#7490b0"
+
+
 centigradeStyle model attr =
     case model.temperatureScale of
         Centigrade ->
-            [ style "background-color" "black", style "color" "white" ] ++ attr
+            [ style "background-color" dark, style "color" "white" ] ++ attr
 
         Fahrenheit ->
-            [ style "background-color" "#888", style "color" "white" ] ++ attr
+            [ style "background-color" light, style "color" "white" ] ++ attr
 
 
 fahrenheitStyle model attr =
     case model.temperatureScale of
         Centigrade ->
-            [ style "background-color" "#888", style "color" "white" ] ++ attr
+            [ style "background-color" light, style "color" "white" ] ++ attr
 
         Fahrenheit ->
-            [ style "background-color" "black", style "color" "white" ] ++ attr
+            [ style "background-color" dark, style "color" "white" ] ++ attr
 
 
 setToCentigrade model =
@@ -119,6 +129,11 @@ getApiKeyLink =
 
 messageLine model =
     div [ style "margin-bottom" "10px", style "margin-top" "10px" ] [ text model.message ]
+
+
+apiLine =
+    div [ style "margin-bottom" "10px", style "margin-top" "10px" ]
+        [ text "You can paste in b0dadd61e9751e297ed9519af39ec7bc, but only temporarily (please!)" ]
 
 
 
@@ -211,7 +226,7 @@ indoorRHRow weather =
     tr []
         [ td [] [ text "Indoor RH" ]
         , td [ style "padding-left" "20px" ]
-            [ text <| addSuffix "%" <| String.fromFloat <| toFloat <| round <| (rhIndoor 22.2 weather) * 100 ]
+            [ text <| addSuffix "%" <| String.fromFloat <| toFloat <| round <| rhIndoor 22.2 weather * 100 ]
         ]
 
 
@@ -260,13 +275,13 @@ evp temperature pressure =
         temp =
             temperature - 273.15
     in
-        (1.0007 + 0.00000346 * pressure) * 6.1121 * exp (17.502 * temp / (240.9 + temp))
+    (1.0007 + 0.00000346 * pressure) * 6.1121 * exp (17.502 * temp / (240.9 + temp))
 
 
 {-| Actual vapor pressuure
 -}
 avp temperature pressure humidity =
-    (evp temperature pressure) * humidity / 100
+    evp temperature pressure * humidity / 100
 
 
 {-| Computed indoor relative humidity at 22 C based on
@@ -284,4 +299,4 @@ rhIndoor indoorCentigradeTemperature weather =
         denominator =
             evp indoorTemperature weather.main.pressure
     in
-        numerator / denominator
+    numerator / denominator

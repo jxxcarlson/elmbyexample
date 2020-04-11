@@ -2,18 +2,29 @@ port module WeatherApp exposing (main)
 
 {- This app retrieves and displays weather data from openweathermap.org. -}
 
+import BeautifulExample
 import Browser
+import Color
 import Decoder exposing (weatherDecoder)
-import Json.Decode as Decode exposing (decodeValue)
 import Html
 import Http
+import Json.Decode as Decode exposing (decodeValue)
 import Json.Encode exposing (Value)
-import Types exposing (Model, Msg(..), TemperatureScale(..), Status(..))
+import Types exposing (Model, Msg(..), Status(..), TemperatureScale(..))
 import View exposing (view)
 
 
 main =
-    Browser.element
+    BeautifulExample.element
+        { title = "Weather"
+        , details =
+            Just """Get the weather from from openweathermap.org. You will need an API key.
+              Press 'get Api key' to get one."""
+        , color = Just Color.blue
+        , maxWidth = 400
+        , githubUrl = Just "https://github.com/jxxcarlson/elmbyexample/tree/master/src/weatherApp"
+        , documentationUrl = Just "https://github.com/jxxcarlson/elmbyexample"
+        }
         { init = init
         , view = view
         , update = update
@@ -48,12 +59,12 @@ decodeValue x =
         result =
             Decode.decodeValue Decode.string x
     in
-        case result of
-            Ok string ->
-                RestoreApiKey string
+    case result of
+        Ok string ->
+            RestoreApiKey string
 
-            Err _ ->
-                RestoreApiKey ""
+        Err _ ->
+            RestoreApiKey ""
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -97,7 +108,7 @@ getNewWeatherByCity city apiKey =
         request =
             Http.get url weatherDecoder
     in
-        Http.send NewWeather request
+    Http.send NewWeather request
 
 
 updateWeather newData model =
@@ -129,16 +140,18 @@ doRestoreApiKey apiKey model =
         status =
             if apiKey /= "" then
                 Starting
+
             else
                 Start
 
         message =
             if apiKey == "" then
                 "apiKey: NOT FOUND"
+
             else
                 "apiKey found"
     in
-        ( { model | apiKey = apiKey, status = status, message = message }, Cmd.none )
+    ( { model | apiKey = apiKey, status = status, message = message }, Cmd.none )
 
 
 
