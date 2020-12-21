@@ -3,7 +3,6 @@ module Main exposing (main)
 {- This is a starter app which presents a text label, text field, and a button.
    What you enter in the text field is echoed in the label.  When you press the
    button, the text in the label is reverse.
-
    This version uses `mdgriffith/elm-ui` for the view functions.
 -}
 
@@ -13,7 +12,6 @@ import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
 import Element.Input as Input
-import Http
 
 
 main =
@@ -75,13 +73,19 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Element.layout [] (mainColumn model)
+    Element.layoutWith { options = [focusStyle noFocus]} [] (mainView model)
 
+noFocus : Element.FocusStyle
+noFocus =
+    { borderColor = Nothing
+    , backgroundColor = Nothing
+    , shadow = Nothing
+    }
 
-mainColumn : Model -> Element Msg
-mainColumn model =
+mainView : Model -> Element Msg
+mainView model =
     column mainColumnStyle
-        [ column [ centerX, spacing 20 ]
+        [ column [  spacing 20 ]
             [ title "Starter app"
             , inputText model
             , appButton
@@ -92,28 +96,29 @@ mainColumn model =
 
 title : String -> Element msg
 title str =
-    row [ centerX, Font.bold ] [ text str ]
+    row [  Font.size 36 ] [ text str ]
 
 
 outputDisplay : Model -> Element msg
 outputDisplay model =
-    row [ centerX ]
+    row [ ]
         [ text model.output ]
 
 
 inputText : Model -> Element Msg
 inputText model =
-    Input.text []
-        { onChange = InputText
-        , text = model.input
-        , placeholder = Nothing
-        , label = Input.labelLeft [] <| el [] (text "")
-        }
+    el [moveLeft 5]
+        (Input.text []
+            { onChange = InputText
+            , text = model.input
+            , placeholder = Nothing
+            , label = Input.labelLeft [] <| el [] (text "")
+            })
 
 
 appButton : Element Msg
 appButton =
-    row [ centerX ]
+    row [ ]
         [ Input.button buttonStyle
             { onPress = Just ReverseText
             , label = el [ centerX, centerY ] (text "Reverse")
@@ -132,6 +137,8 @@ mainColumnStyle =
     , centerY
     , Background.color (rgb255 240 240 240)
     , paddingXY 20 20
+    , width (px 600)
+    , height (px 400)
     ]
 
 
@@ -140,7 +147,3 @@ buttonStyle =
     , Font.color (rgb255 255 255 255)
     , paddingXY 15 8
     ]
-
-
-
---
