@@ -3,7 +3,7 @@ module Main exposing (main)
 {- This is a starter app which presents a text label, text field, and a button.
    What you enter in the text field is echoed in the label.  When you press the
    button, the text in the label is reverse.
-   This version uses `mdgriffith/elm-ui` for the view functions.
+   This is the Elements version.  It uses uses `mdgriffith/elm-ui` for the view functions.
 -}
 
 import Browser
